@@ -1,0 +1,279 @@
+html {
+    /* Завжди показувати смугу прокрутки, щоб уникнути "стрибків" контенту */
+    overflow-y: scroll;
+}
+/* --- ОСНОВНІ НАЛАШТУВАННЯ --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* --- НАВІГАЦІЯ --- */
+.navbar {
+    width: 100%;
+    background: white;
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.logout-link {
+    background: #fff5f5;
+    color: #c53030 !important;
+    padding: 8px 15px;
+    border-radius: 8px;
+}
+
+/* --- КОНТЕЙНЕР (ОПУСКАЄМО ЗАГОЛОВОК) --- */
+.container {
+    width: 90%;
+    max-width: 1400px;
+    padding-top: 100px; /* Відступ від набару */
+    margin: 0 auto 40px auto;
+    position: relative; /* Для позиціонування фільтра */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.filter-wrapper {
+    position: absolute;
+    top: 100px; /* На тому ж рівні, що й початок контенту */
+    left: 0;   /* Зліва */
+    z-index: 10;
+}
+
+.category-select {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: white;
+    color: #4f46e5;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    outline: none;
+}
+
+.category-select:hover {
+    background: #f8fafc;
+}
+
+/* Прибираємо старі стилі кнопок фільтрації, вони більше не потрібні */
+.filter-section, .filter-btn { display: none; }
+
+.page-header {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: white;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+}
+
+.page-header p {
+    margin: 0;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* --- СІТКА (4 В РЯД) --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    width: 100%;
+}
+
+/* --- КАРТКА ТОВАРУ --- */
+.product-card {
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+}
+
+.product-image-placeholder {
+    width: 100%;
+    height: 180px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.product-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #1a202c;
+    font-weight: 700;
+}
+
+.category {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+/* --- ФУТЕР КАРТКИ --- */
+.product-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.buy-btn {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* --- АДАПТИВНІСТЬ --- */
+@media (max-width: 1200px) {
+    .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .container { padding-top: 100px; }
+}
+
+.filter-section {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.filter-btn {
+    text-decoration: none;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.filter-btn.active {
+    background: white;
+    color: #4f46e5;
+    border-color: white;
+}
+
+.product-image-container {
+    width: 100%;
+    height: 200px; /* Фіксована висота для всіх картинок */
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-top-left-radius: 15px; /* Якщо у картки закруглені кути */
+    border-top-right-radius: 15px;
+}
+
+.product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Це важливо: картинка заповнить блок без деформації */
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img {
+    transform: scale(1.05); /* Легкий зум при наведенні */
+}
+
+.no-image {
+    font-size: 50px;
+}
+
+/* Кольори для статусів у покупця */
+.status-badge {
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending { background-color: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+.status-processing { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+.status-shipped { background-color: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+.status-delivered { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }

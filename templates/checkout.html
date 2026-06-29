@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - {{ product.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='checkout.css') }}">
+</head>
+<body>
+
+<div class="checkout-container">
+    <div class="checkout-card">
+        <a href="/products" class="back-link">← Back to Products</a>
+
+        <h2>Checkout</h2>
+
+        <div class="order-summary">
+            <div class="product-preview">
+                <span class="box-icon">📦</span>
+                <div>
+                    <h3>{{ product.name }}</h3>
+                    <p class="category">{{ product.category if product.category else 'General' }}</p>
+                </div>
+            </div>
+            <div class="total-price">
+                Total: <span>${{ product.price }}</span>
+            </div>
+        </div>
+
+        <form class="checkout-form" method="POST">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" placeholder="+1..." required>
+            </div>
+            <div class="form-group">
+                <label>Shipping Address</label>
+                <textarea name="address" placeholder="City, Street, Zip Code" rows="3" required></textarea>
+            </div>
+
+            <button type="submit" class="confirm-btn">
+                Confirm Order
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

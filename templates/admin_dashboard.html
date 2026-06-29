@@ -1,0 +1,37 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Admin - Statistics{% endblock %}
+
+{% block content %}
+<header class="main-header" style="margin-bottom: 30px;">
+    <h1 style="font-size: 1.8rem; color: #111;">System Overview</h1>
+    <p style="color: #666;">General statistics of your marketplace</p>
+</header>
+
+<div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
+    <div class="stat-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee;">
+        <h3 style="text-transform: uppercase; font-size: 0.75rem; color: #888; font-weight: 700; margin-bottom: 10px;">Total Products</h3>
+        <p class="stat-number" style="font-size: 2rem; font-weight: 800; color: #111; margin: 0;">{{ stats.total_products }}</p>
+    </div>
+
+    <div class="stat-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee;">
+        <h3 style="text-transform: uppercase; font-size: 0.75rem; color: #888; font-weight: 700; margin-bottom: 10px;">Sellers</h3>
+        <p class="stat-number" style="font-size: 2rem; font-weight: 800; color: #111; margin: 0;">{{ stats.total_sellers }}</p>
+    </div>
+
+    <div class="stat-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee;">
+        <h3 style="text-transform: uppercase; font-size: 0.75rem; color: #888; font-weight: 700; margin-bottom: 10px;">Users</h3>
+        <p class="stat-number" style="font-size: 2rem; font-weight: 800; color: #111; margin: 0;">{{ stats.total_users }}</p>
+    </div>
+
+    <div class="stat-card highlight" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 2px solid #6366f1;">
+        <h3 style="text-transform: uppercase; font-size: 0.75rem; color: #6366f1; font-weight: 700; margin-bottom: 10px;">Pending Requests</h3>
+        <p class="stat-number" style="font-size: 2rem; font-weight: 800; color: #111; margin: 0;">{{ stats.pending_sellers }}</p>
+    </div>
+</div>
+
+<section class="admin-welcome" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee;">
+    <h2 style="margin-bottom: 10px;">Welcome, Chief Administrator!</h2>
+    <p style="color: #666; line-height: 1.6;">Here you can manage the security and structure of your marketplace. Use the sidebar to navigate through orders, seller requests, and products.</p>
+</section>
+{% endblock %}

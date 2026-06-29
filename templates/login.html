@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Welcome again!</h2>
+      <p>Choose your account type to log in</p>
+    </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="role-switcher">
+      <button type="button" class="role-btn active" onclick="setRole('buyer', this)">🛒 Buyer</button>
+      <button type="button" class="role-btn" onclick="setRole('seller', this)">📦 Seller</button>
+    </div>
+
+    <form method="POST" class="login-form">
+      <!-- ВАЖЛИВО: приховане поле -->
+      <input type="hidden" name="role" id="role" value="buyer">
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="name@example.com" required>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" name="password" required>
+      </div>
+
+      <button type="submit" class="login-btn">Log in</button>
+    </form>
+
+    <div class="login-footer">
+      <p>Don't have an account yet? <a href="/register">Register</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+function setRole(role, btn) {
+    document.getElementById('role').value = role;
+
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>

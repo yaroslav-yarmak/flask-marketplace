@@ -1,0 +1,49 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Admin - User Management{% endblock %}
+
+{% block content %}
+<main class="admin-main">
+    <header class="main-header" style="margin-bottom: 30px;">
+        <h1 style="font-size: 1.8rem; color: #111;">User Management</h1>
+        <p style="color: #666;">View and manage all registered buyers and sellers</p>
+    </header>
+
+    <div class="table-container" style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="border-bottom: 2px solid #f4f4f4;">
+                    <th style="padding: 12px; color: #888; font-size: 0.8rem; text-transform: uppercase;">ID</th>
+                    <th style="padding: 12px; color: #888; font-size: 0.8rem; text-transform: uppercase;">Email</th>
+                    <th style="padding: 12px; color: #888; font-size: 0.8rem; text-transform: uppercase;">Role</th>
+                    <th style="padding: 12px; color: #888; font-size: 0.8rem; text-transform: uppercase;">Status</th>
+                    <th style="padding: 12px; color: #888; font-size: 0.8rem; text-transform: uppercase;">Joined Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr style="border-bottom: 1px solid #f9f9f9; transition: 0.3s;" onmouseover="this.style.backgroundColor='#fcfcff'" onmouseout="this.style.backgroundColor='transparent'">
+                    <td style="padding: 15px; font-weight: 600; color: #6366f1;">#{{ user.id }}</td>
+                    <td style="padding: 15px;">
+                        <div style="font-weight: 600; color: #111;">{{ user.email }}</div>
+                    </td>
+                    <td style="padding: 15px;">
+                        <span style="padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+                            {{ 'background: #eef2ff; color: #6366f1;' if user.role == 'admin' else 'background: #f0fdf4; color: #16a34a;' if user.role == 'seller' else 'background: #f8fafc; color: #64748b;' }}">
+                            {{ user.role.upper() }}
+                        </span>
+                    </td>
+                    <td style="padding: 15px;">
+                        <span style="color: #16a34a; font-size: 0.85rem;">● {{ user.status }}</span>
+                    </td>
+                    <td style="padding: 15px; color: #666; font-size: 0.85rem;">
+                        {# ЗАМІНЕНО created_at НА joined_date #}
+                        {{ user.joined_date.strftime('%Y-%m-%d') if user.joined_date else 'Unknown' }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}

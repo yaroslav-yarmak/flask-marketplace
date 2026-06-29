@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Order Management - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='seller_orders.css') }}">
+    <style>
+        /* Додаткові стилі для адмін-панелі */
+        .admin-main {
+            padding: 30px;
+            position: relative;
+        }
+
+        .orders-table th {
+            background-color: #24262d;
+            color: #ffffff;
+            padding: 15px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        .seller-tag {
+            font-size: 0.8em;
+            color: #6366f1;
+            background: #eef2ff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Стиль для активного пункту меню */
+        .admin-sidebar nav ul li.active a {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #6366f1;
+            color: #fff;
+        }
+
+        /* Компактне сповіщення у верхньому правому куті */
+        .admin-flash-wrapper {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 1000;
+            min-width: 250px;
+        }
+
+        .admin-flash-item {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #bbf7d0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <h2 style="color: #6366f1; font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">ADMIN PANEL</h2>
+        </div>
+        <nav>
+            <ul>
+                <li class="{{ 'active' if request.path == '/admin/dashboard' }}">
+                    <a href="{{ url_for('admin_dashboard') }}">📊 Statistics</a>
+                </li>
+                <li class="{{ 'active' if request.path == '/admin/requests' }}">
+                    <a href="{{ url_for('admin_requests') }}">👤 Seller Requests</a>
+                </li>
+                <li class="{{ 'active' if request.path == '/admin/orders' }}">
+                    <a href="{{ url_for('admin_all_orders') }}">📦 All Orders</a>
+                </li>
+                <li>
+                    <a href="#">🛍️ All Products</a>
+                </li>
+                <li>
+                    <a href="#">📂 Categories</a>
+                </li>
+                <hr style="opacity: 0.1; margin: 20px 0; border: none; border-top: 1px solid #eee;">
+                <li>
+                    <a href="{{ url_for('logout') }}" class="logout" style="color: #ff6b6b;">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+
+        <div class="admin-flash-wrapper">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="admin-flash-item">
+                    ✅ {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+        </div>
+
+        <header style="margin-bottom: 30px;">
+            <h1>Global Orders Tracker</h1>
+            <p style="color: #666;">Monitoring activity across all sellers and buyers</p>
+        </header>
+
+        <div class="table-container">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Product & Seller</th>
+                        <th>Customer Details</th>
+                        <th style="text-align: center;">Current Status</th>
+                        <th>Order Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>
+                            <div style="font-weight: 700; color: #111;">{{ order.product.title }}</div>
+                            <span class="seller-tag">Seller ID: {{ order.seller_id }}</span>
+                        </td>
+                        <td class="customer-info">
+                            <strong>{{ order.full_name }}</strong>
+                            <small style="display: block; color: #666;">{{ order.phone }}</small>
+                        </td>
+                        <td style="text-align: center;">
+                            <span class="status-badge status-{{ order.status.lower() }}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td style="font-size: 0.9em; color: #444;">
+                            {{ order.date_ordered.strftime('%d %b %Y, %H:%M') }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 50px; color: #999;">
+                            <div style="font-size: 2em; margin-bottom: 10px;">📉</div>
+                            No orders found in the database.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

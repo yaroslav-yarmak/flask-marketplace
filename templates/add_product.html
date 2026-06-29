@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_product.css') }}">
+</head>
+
+<body>
+
+<div class="admin-container">
+
+    <aside class="admin-sidebar">
+        <nav>
+            <ul>
+                <li><a href="/dashboard">My Shop</a></li>
+                <li class="active">Add Product</li>
+                <li>Orders</li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="admin-content">
+        <h1>Add New Product</h1>
+
+        <form class="product-form" method="POST" enctype="multipart/form-data" action="/add-product">
+
+            <div>
+                <label>Media</label>
+                <div class="upload-zone">
+                    📸
+                    <p>Upload Product Image</p>
+                    <input type="file" name="image" accept="image/*" required>
+                </div>
+            </div>
+
+            <div>
+                <div class="input-group">
+                    <label>Title</label>
+                    <input type="text" name="title" placeholder="Product title" required>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Price</label>
+                        <input type="number" name="price" step="0.01" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Stock</label>
+                        <input type="number" name="stock" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="ELECTRONICS">Electronics</option>
+                        <option value="CLOTHING">Clothing</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea name="desc" placeholder="Write something about your product..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/dashboard" class="btn-cancel" style="text-decoration: none; text-align: center; display: inline-block; line-height: 40px;">Cancel</a>
+                    <button type="submit" class="btn-save">Save Product</button>
+                </div>
+            </div>
+
+        </form>
+    </main>
+
+</div>
+
+</body>
+</html>

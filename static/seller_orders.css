@@ -1,0 +1,78 @@
+/* static/seller_orders.css */
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+/* Кольори статусів */
+.status-pending { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+.status-processing { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+.status-shipped { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+.status-delivered { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.status-cancelled { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+.action-btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85em;
+    margin: 4px 2px;
+    display: inline-block;
+    background: white;
+    border: 1px solid #e5e7eb;
+    color: #4b5563;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.action-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: #111827;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.orders-table {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    border-collapse: collapse;
+    margin-top: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.orders-table thead {
+    background: #1f2937;
+    color: white;
+}
+
+.orders-table th {
+    padding: 18px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.orders-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.customer-info strong {
+    color: #111827;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.customer-info small {
+    color: #6b7280;
+    line-height: 1.4;
+    display: block;
+}

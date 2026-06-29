@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Заявки продавців</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header"><h2>Admin Panel</h2></div>
+        <nav>
+            <ul>
+                <li><a href="/admin/dashboard">📊 Статистика</a></li>
+                <li class="active"><a href="/admin/requests">👤 Заявки продавців</a></li>
+                <li><a href="#">📦 Всі товари</a></li>
+                <hr>
+                <li><a href="/logout" class="logout">Вихід</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        <h1>Керування заявками продавців</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div style="padding: 15px; margin-bottom: 20px; border-radius: 8px; background-color: {% if category == 'success' %}#d4edda{% elif category == 'warning' %}#fff3cd{% else %}#f8d7da{% endif %}; color: #333; border-left: 5px solid {% if category == 'success' %}#28a745{% elif category == 'warning' %}#ffc107{% else %}#dc3545{% endif %};">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <table style="width: 100%; background: white; border-radius: 12px; border-collapse: collapse; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <thead style="background: #24262d; color: white;">
+                <tr>
+                    <th style="padding: 15px; text-align: left;">Email</th>
+                    <th style="padding: 15px; text-align: center;">Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for seller in sellers %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 15px;">{{ seller.email }}</td>
+                    <td style="padding: 15px; text-align: center;">
+                        <a href="{{ url_for('approve_seller', user_id=seller.id) }}" style="background: #2ecc71; color: white; padding: 8px 15px; border-radius: 6px; text-decoration: none; margin-right: 10px;">✅ Схвалити</a>
+                        <a href="{{ url_for('reject_seller', user_id=seller.id) }}" style="background: #e74c3c; color: white; padding: 8px 15px; border-radius: 6px; text-decoration: none;">❌ Відхилити</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="2" style="padding: 30px; text-align: center; color: #7f8c8d;">Нових заявок немає</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</div>
+</body>
+</html>

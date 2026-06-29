@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <h2 style="color: #6366f1; font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Admin Panel</h2>
+        </div>
+        <nav>
+            <ul>
+                <li class="{{ 'active' if request.path == '/admin/dashboard' }}">
+                    <a href="{{ url_for('admin_dashboard') }}">📊 Statistics</a>
+                </li>
+                <li class="{{ 'active' if request.path == '/admin/users' }}">
+                    <a href="{{ url_for('admin_users') }}">👥 All Users</a>
+                </li>
+                <li class="{{ 'active' if request.path == '/admin/requests' }}">
+                    <a href="{{ url_for('admin_requests') }}">👤 Seller Requests</a>
+                </li>
+                <li class="{{ 'active' if request.path == '/admin/orders' }}">
+                    <a href="{{ url_for('admin_all_orders') }}">📦 All Orders</a>
+                </li>
+                <li>
+                    <a href="#">🛍️ All Products</a>
+                </li>
+                <li>
+                    <a href="#">📂 Categories</a>
+                </li>
+                <hr style="opacity: 0.1; margin: 20px 0; border: none; border-top: 1px solid #eee;">
+                <li>
+                    <a href="{{ url_for('logout') }}" class="logout" style="color: #ff6b6b;">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+</body>
+</html>

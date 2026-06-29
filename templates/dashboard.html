@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seller Dashboard</title>
+
+    <!-- CSS ПІДКЛЮЧЕННЯ -->
+    <<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+    <h2>Seller Panel</h2>
+
+    <a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">
+        📦 My Products
+    </a>
+
+    <a href="/add-product" class="{% if request.path == '/add-product' %}active{% endif %}">
+        ➕ Add Product
+    </a>
+
+    <a href="/orders" class="{% if request.path == '/orders' %}active{% endif %}">
+        🛒 Orders
+    </a>
+
+    <hr style="margin: 20px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.1);">
+
+    <a href="/logout" style="color: #ff4d4d;">Logout</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}" style="padding: 15px; margin-bottom: 20px; border-radius: 8px; border-left: 5px solid {% if category == 'success' %}#28a745{% else %}#dc3545{% endif %}; background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: #333;">
+                <strong>{{ 'Success!' if category == 'success' else 'Info:' }}</strong> {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="top-bar">
+            <h1>My Products</h1>
+            <a class="add-btn" href="/add-product">+ Add Product</a>
+        </div>
+
+        {% for product in products %}
+
+        <div class="product-card">
+            <div class="product-main-info">
+                <div class="dashboard-img-container">
+                    {% if product.image_file and product.image_file != 'default.jpg' %}
+                        <img src="{{ url_for('static', filename='uploads/' + product.image_file) }}"
+                             alt="{{ product.title }}" class="dashboard-product-img">
+                    {% else %}
+                        <div class="dashboard-no-image">📦</div>
+                    {% endif %}
+                </div>
+
+                <div class="product-text-details">
+                    <h3>{{ product.title }}</h3>
+                    <p class="product-price">${{ product.price }}</p>
+                    <p class="product-stock"><strong>Stock:</strong> {{ product.stock if product.stock else 0 }} pcs.</p>
+                    <p class="product-desc-short"><small>{{ product.desc[:60] }}{% if product.desc|length > 60 %}...{% endif %}</small></p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a class="edit-link" href="/edit-product/{{ product.id }}">Edit</a>
+                <form method="POST" action="/delete-product/{{ product.id }}" style="display:inline;">
+                    <button class="delete-btn" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

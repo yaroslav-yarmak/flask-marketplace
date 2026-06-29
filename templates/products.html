@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marketplace - All Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='products.css') }}">
+    <style>
+        /* Стилі для повідомлення про успіх */
+/* Оновлені стилі для повідомлень */
+        .flash-messages {
+            max-width: 1200px;
+            margin: 80px auto 10px; /* Додали верхній відступ 80px, щоб вийти з-під navbar */
+            padding: 0 20px;
+            position: relative;
+            z-index: 100; /* Щоб бути поверх інших елементів контенту */
+        }
+        .flash-msg {
+            padding: 20px; /* Збільшили внутрішні відступи */
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600; /* Зробили текст жирнішим */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Додали тінь для помітності */
+            animation: slideDown 0.5s ease-out;
+            display: block; /* Гарантуємо, що це блок */
+        }
+        .flash-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        .flash-warning {
+            background-color: #fef9c3;
+            color: #854d0e;
+            border: 1px solid #fef08a;
+        }
+        .flash-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">MyMarket</div>
+    <div class="nav-links">
+        <a href="/products">Products</a>
+        <a href="/my-orders">My Orders</a> <a href="/logout" class="logout-link">Logout</a>
+    </div>
+</nav>
+
+<div class="flash-messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-msg flash-{{ category if category != 'message' else 'success' }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</div>
+
+<div class="container">
+    <div class="filter-wrapper">
+        <form action="{{ url_for('products') }}" method="get">
+            <select name="category" onchange="this.form.submit()" class="category-select">
+                <option value="all" {% if current_category == 'all' %}selected{% endif %}>All Categories</option>
+                <option value="ELECTRONICS" {% if current_category == 'ELECTRONICS' %}selected{% endif %}>Electronics</option>
+                <option value="CLOTHING" {% if current_category == 'CLOTHING' %}selected{% endif %}>Clothing</option>
+            </select>
+        </form>
+    </div>
+
+    <header class="page-header">
+        <h1>Our Products</h1>
+        <p>Find the best deals from trusted sellers</p>
+    </header>
+
+    <div class="product-grid">
+        {% for product in items %}
+        <div class="product-card">
+            <div class="product-image-container">
+                {% if product.image_file and product.image_file != 'default.jpg' %}
+                    <img src="{{ url_for('static', filename='uploads/' + product.image_file) }}"
+                         alt="{{ product.title }}" class="product-img">
+                {% else %}
+                    <div class="no-image">📦</div>
+                {% endif %}
+            </div>
+
+            <div class="product-info">
+                <span class="category">{{ product.category if product.category else 'General' }}</span>
+                <h3>{{ product.title }}</h3>
+                <p class="stock-info">In stock: <strong>{{ product.stock if product.stock else 0 }}</strong></p>
+                <p class="description">{{ product.desc[:80] }}{% if product.desc|length > 80 %}...{% endif %}</p>
+                <div class="product-footer">
+                    <span class="price">${{ product.price }}</span>
+                    <a href="{{ url_for('checkout', product_id=product.id) }}" class="buy-btn">Buy Now</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No products found. Please check back later!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>
