@@ -1,14 +1,18 @@
 import os
+from dotenv import load_dotenv
+
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
+load_dotenv()
+
 app = Flask(__name__)
 
 # --- КОНФІГУРАЦІЯ ---
-app.secret_key = "super_secret_key_123"
+app.secret_key = os.getenv("SECRET_KEY")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
