@@ -1,0 +1,23 @@
+[33mcommit 196a73bc543bf5ae181075b266a0033d3843a33b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: dazvar <yarmayaroslav@gmail.com>
+Date:   Thu Jul 9 20:45:32 2026 +0300
+
+    Add get_current_time function
+
+[33mcommit 642c8740fc76e64d5fe55a83bc71d45e5b041f05[m
+Author: dazvar <yarmayaroslav@gmail.com>
+Date:   Thu Jul 9 20:05:08 2026 +0300
+
+    Move secret key to environment variable
+
+[33mcommit ce52458198db43648b79ec5171f99b7cead613c9[m
+Author: dazvar <yarmayaroslav@gmail.com>
+Date:   Thu Jul 9 19:31:24 2026 +0300
+
+    Remove local IDE and database files from repository
+
+[33mcommit ac5afae25038c1f125c9628a522b27b43f574234[m
+Author: dazvar <yarmayaroslav@gmail.com>
+Date:   Mon Jun 29 22:14:39 2026 +0300
+
+    Initial commit

@@ -69,7 +69,7 @@
 
 <div class="container">
     <div class="filter-wrapper">
-        <form action="{{ url_for('products') }}" method="get">
+        <form action="{{ url_for('buyer.products') }}" method="get">
             <select name="category" onchange="this.form.submit()" class="category-select">
                 <option value="all" {% if current_category == 'all' %}selected{% endif %}>All Categories</option>
                 <option value="ELECTRONICS" {% if current_category == 'ELECTRONICS' %}selected{% endif %}>Electronics</option>
