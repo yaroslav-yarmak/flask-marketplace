@@ -8,4 +8,6 @@ __pycache__/
 .idea/
 
 instance/
-*.dbinspect_tables.py
+*.db
+
+inspect_tables.py
