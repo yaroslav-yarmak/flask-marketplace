@@ -102,7 +102,7 @@
                 <p class="description">{{ product.desc[:80] }}{% if product.desc|length > 80 %}...{% endif %}</p>
                 <div class="product-footer">
                     <span class="price">${{ product.price }}</span>
-                    <a href="{{ url_for('checkout', product_id=product.id) }}" class="buy-btn">Buy Now</a>
+                    <a href="{{ url_for('buyer.checkout', product_id=product.id) }}" class="buy-btn">Buy Now</a>
                 </div>
             </div>
         </div>

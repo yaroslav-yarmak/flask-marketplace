@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from werkzeug.utils import secure_filename
 
 from auth_service import authenticate_user, login_user, logout_user, register_user
+from commands import register_commands
 from models import db, Product, User, Order
 
 load_dotenv()
@@ -40,6 +41,7 @@ from product_service import create_product, delete_product, get_product_by_id, g
 app.register_blueprint(buyer_bp)
 app.register_blueprint(seller_bp)
 app.register_blueprint(admin_bp)
+register_commands(app)
 
 # --- МАРШРУТИ ---
 
@@ -86,6 +88,4 @@ def logout():
     return redirect('/login')
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)

@@ -16,16 +16,16 @@
         <nav>
             <ul>
                 <li class="{{ 'active' if request.path == '/admin/dashboard' }}">
-                    <a href="{{ url_for('admin_dashboard') }}">📊 Statistics</a>
+                    <a href="{{ url_for('admin.admin_dashboard') }}">📊 Statistics</a>
                 </li>
                 <li class="{{ 'active' if request.path == '/admin/users' }}">
-                    <a href="{{ url_for('admin_users') }}">👥 All Users</a>
+                    <a href="{{ url_for('admin.admin_users') }}">👥 All Users</a>
                 </li>
                 <li class="{{ 'active' if request.path == '/admin/requests' }}">
-                    <a href="{{ url_for('admin_requests') }}">👤 Seller Requests</a>
+                    <a href="{{ url_for('admin.admin_requests') }}">👤 Seller Requests</a>
                 </li>
                 <li class="{{ 'active' if request.path == '/admin/orders' }}">
-                    <a href="{{ url_for('admin_all_orders') }}">📦 All Orders</a>
+                    <a href="{{ url_for('admin.admin_all_orders') }}">📦 All Orders</a>
                 </li>
                 <li>
                     <a href="#">🛍️ All Products</a>

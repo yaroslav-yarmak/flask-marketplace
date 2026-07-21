@@ -9,6 +9,8 @@ from order_service import create_checkout_order, get_all_orders, get_buyer_order
 @pytest.fixture()
 def app_context():
     app_module.app.config.update(TESTING=True, SQLALCHEMY_DATABASE_URI='sqlite:///:memory:')
+    assert app_module.app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///:memory:'
+    assert app_module.app.config['TESTING'] is True
     with app_module.app.app_context():
         app_module.db.drop_all()
         app_module.db.create_all()
@@ -157,6 +159,17 @@ def test_login_user_rejects_unapproved_seller(app_context):
 
         assert redirect_path is None
         assert error_message == 'Please wait for admin approval.'
+
+
+def test_login_user_allows_admin_and_returns_redirect_path_with_no_error(app_context):
+    with app_module.app.test_request_context():
+        user = create_user('admin-login@example.com', role='admin', approved=True)
+
+        redirect_path, error_message = login_user(user, 'admin')
+
+        assert redirect_path == '/admin/dashboard'
+        assert error_message is None
+        assert session['user_id'] == user.id
 
 
 def test_register_user_rejects_duplicate_email(app_context):

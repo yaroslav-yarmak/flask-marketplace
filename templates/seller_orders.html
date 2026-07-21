@@ -74,9 +74,9 @@
                         </span>
                     </td>
                     <td style="text-align: center;">
-                        <a href="{{ url_for('update_order_status', order_id=order.id, status='Processing') }}" class="action-btn">Process</a>
-                        <a href="{{ url_for('update_order_status', order_id=order.id, status='Shipped') }}" class="action-btn">Ship</a>
-                        <a href="{{ url_for('update_order_status', order_id=order.id, status='Delivered') }}" class="action-btn">Deliver</a>
+                        <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Processing') }}" class="action-btn">Process</a>
+                        <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Shipped') }}" class="action-btn">Ship</a>
+                        <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Delivered') }}" class="action-btn">Deliver</a>
                     </td>
                 </tr>
                 {% else %}

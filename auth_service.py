@@ -18,7 +18,7 @@ def authenticate_user(email, password):
 def login_user(user, role_from_form):
     if user.role == 'admin':
         session['user_id'] = user.id
-        return '/admin/dashboard'
+        return '/admin/dashboard', None
 
     if user.role == 'seller':
         if not user.is_approved:
