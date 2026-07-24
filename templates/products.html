@@ -47,6 +47,10 @@
 </head>
 <body>
 
+<div class="page-bg"></div>
+
+<div class="page-wrapper">
+
 <nav class="navbar">
     <div class="logo"><span class="logo-my">My</span><span class="logo-market">Market</span></div>
     <div class="navbar-center">
@@ -94,41 +98,55 @@
     {% endwith %}
 </div>
 
+<div class="hero-area">
+    <div class="hero-content">
+        <h1 class="hero-title">Everything you need in one place</h1>
+        <p class="hero-desc">Discover useful products from trusted sellers. Quality, variety and great prices — all in one place.</p>
+        <a href="#products-section" class="hero-btn">Explore products</a>
+    </div>
+</div>
+
 <div class="container">
+    <div class="products-panel" id="products-section">
+        <header class="page-header">
+            <h1>Our Products</h1>
+            <p>Find the best deals from trusted sellers</p>
+        </header>
 
-    <header class="page-header">
-        <h1>Our Products</h1>
-        <p>Find the best deals from trusted sellers</p>
-    </header>
+        <div class="product-grid">
+            {% for product in items %}
+            <div class="product-card">
+                <div class="product-image-container">
+                    {% if product.image_file and product.image_file != 'default.jpg' %}
+                        <img src="{{ url_for('static', filename='uploads/' + product.image_file) }}"
+                             alt="{{ product.title }}" class="product-img">
+                    {% else %}
+                        <div class="no-image">📦</div>
+                    {% endif %}
+                </div>
 
-    <div class="product-grid">
-        {% for product in items %}
-        <div class="product-card">
-            <div class="product-image-container">
-                {% if product.image_file and product.image_file != 'default.jpg' %}
-                    <img src="{{ url_for('static', filename='uploads/' + product.image_file) }}"
-                         alt="{{ product.title }}" class="product-img">
-                {% else %}
-                    <div class="no-image">📦</div>
-                {% endif %}
-            </div>
-
-            <div class="product-info">
-                <span class="category">{{ product.category if product.category else 'General' }}</span>
-                <h3>{{ product.title }}</h3>
-                <p class="stock-info">In stock: <strong>{{ product.stock if product.stock else 0 }}</strong></p>
-                <p class="description">{{ product.desc[:80] }}{% if product.desc|length > 80 %}...{% endif %}</p>
-                <div class="product-footer">
-                    <span class="price">${{ product.price }}</span>
-                    <a href="{{ url_for('buyer.checkout', product_id=product.id) }}" class="buy-btn">Buy Now</a>
+                <div class="product-info">
+                    <span class="category">{{ product.category if product.category else 'General' }}</span>
+                    <h3>{{ product.title }}</h3>
+                    {% set stock = product.stock if product.stock else 0 %}
+                    <p class="stock-info">
+                        <span class="stock-badge {% if stock > 0 %}in-stock{% else %}out-of-stock{% endif %}">
+                            {{ 'In stock' if stock > 0 else 'Out of stock' }}: {{ stock }}
+                        </span>
+                    </p>
+                    <p class="description">{{ product.desc[:80] }}{% if product.desc|length > 80 %}...{% endif %}</p>
+                    <div class="product-footer">
+                        <span class="price">${{ product.price }}</span>
+                        <a href="{{ url_for('buyer.checkout', product_id=product.id) }}" class="buy-btn">Buy Now</a>
+                    </div>
                 </div>
             </div>
+            {% else %}
+            <div class="empty-state">
+                <p>No products found. Please check back later!</p>
+            </div>
+            {% endfor %}
         </div>
-        {% else %}
-        <div class="empty-state">
-            <p>No products found. Please check back later!</p>
-        </div>
-        {% endfor %}
     </div>
 </div>
 
