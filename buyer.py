@@ -49,8 +49,23 @@ def home():
 @buyer_bp.route('/products')
 def products():
     selected_category = request.args.get('category', 'all')
-    items = get_products_by_category(selected_category)
-    return render_template('products.html', items=items, current_category=selected_category)
+    search = request.args.get('search', '').strip()
+    sort = request.args.get('sort', '')
+    in_stock_only = request.args.get('in_stock', '') == '1'
+    items = get_products_by_category(
+        selected_category,
+        search=search or None,
+        sort=sort or None,
+        in_stock_only=in_stock_only,
+    )
+    return render_template(
+        'products.html',
+        items=items,
+        current_category=selected_category,
+        search=search,
+        sort=sort,
+        in_stock_only=in_stock_only,
+    )
 
 
 @buyer_bp.route('/my-orders')

@@ -68,15 +68,32 @@
 </div>
 
 <div class="container">
-    <div class="filter-wrapper">
-        <form action="{{ url_for('buyer.products') }}" method="get">
-            <select name="category" onchange="this.form.submit()" class="category-select">
+<div class="filter-wrapper">
+    <form action="{{ url_for('buyer.products') }}" method="get" class="filter-form">
+        <div class="filter-row">
+            <input type="text" name="search" placeholder="Search by title..." value="{{ search }}" class="search-input">
+
+            <select name="category" class="category-select">
                 <option value="all" {% if current_category == 'all' %}selected{% endif %}>All Categories</option>
                 <option value="ELECTRONICS" {% if current_category == 'ELECTRONICS' %}selected{% endif %}>Electronics</option>
                 <option value="CLOTHING" {% if current_category == 'CLOTHING' %}selected{% endif %}>Clothing</option>
             </select>
-        </form>
-    </div>
+
+            <select name="sort" class="sort-select">
+                <option value="" {% if not sort %}selected{% endif %}>Default order</option>
+                <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+            </select>
+
+            <label class="stock-label">
+                <input type="checkbox" name="in_stock" value="1" {% if in_stock_only %}checked{% endif %}>
+                In stock only
+            </label>
+
+            <button type="submit" class="filter-submit">Filter</button>
+        </div>
+    </form>
+</div>
 
     <header class="page-header">
         <h1>Our Products</h1>

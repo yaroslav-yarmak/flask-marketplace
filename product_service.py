@@ -1,10 +1,30 @@
 from models import Product, db
 
 
-def get_products_by_category(selected_category='all'):
-    if selected_category == 'all':
-        return Product.query.all()
-    return Product.query.filter(Product.category.ilike(selected_category)).all()
+def get_products_by_category(selected_category='all', search=None, sort=None, in_stock_only=False):
+    query = Product.query
+
+    # Category filter
+    if selected_category != 'all':
+        query = query.filter(Product.category.ilike(selected_category))
+
+    # Title search (case-insensitive, trimmed)
+    if search:
+        query = query.filter(Product.title.ilike(f'%{search.strip()}%'))
+
+    # In-stock filter
+    if in_stock_only:
+        query = query.filter(Product.stock > 0)
+
+    # Sorting — allowlist only
+    ALLOWED_SORTS = {
+        'price_asc': Product.price.asc(),
+        'price_desc': Product.price.desc(),
+    }
+    if sort in ALLOWED_SORTS:
+        query = query.order_by(ALLOWED_SORTS[sort])
+
+    return query.all()
 
 
 def get_product_by_id(product_id):
