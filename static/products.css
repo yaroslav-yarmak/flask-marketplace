@@ -66,14 +66,57 @@ body {
     align-items: center;
 }
 
+/* === ФІЛЬТР ТОВАРІВ === */
 .filter-wrapper {
-    position: absolute;
-    top: 100px; /* На тому ж рівні, що й початок контенту */
-    left: 0;   /* Зліва */
+    width: 100%;
+    margin-bottom: 20px;
+    position: static;
     z-index: 10;
 }
 
-.category-select {
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Спільні розміри для всіх елементів керування */
+.filter-row select,
+.filter-row input[type="text"],
+.filter-row button {
+    height: 42px;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+}
+
+/* Пошукове поле */
+.search-input {
+    width: 220px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: white;
+    color: #333;
+    font-weight: 500;
+    outline: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.search-input::placeholder {
+    color: #999;
+}
+
+.search-input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
+}
+
+/* Категорія (існуючий стиль) */
+.category-select,
+.sort-select {
     padding: 10px 15px;
     font-size: 0.9rem;
     border-radius: 10px;
@@ -86,8 +129,72 @@ body {
     outline: none;
 }
 
-.category-select:hover {
+.category-select:hover,
+.sort-select:hover {
     background: #f8fafc;
+}
+
+/* "In stock only" — білий заокруглений контейнер */
+.stock-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4f46e5;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    user-select: none;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+.stock-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #4f46e5;
+    margin: 0;
+}
+
+/* Кнопка Filter — заокруглена, контрастна */
+.filter-submit {
+    padding: 10px 24px;
+    font-size: 0.9rem;
+    border-radius: 50px;
+    border: none;
+    background: #4f46e5;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    transition: all 0.2s ease;
+    outline: none;
+    line-height: 1;
+}
+
+.filter-submit:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.filter-submit:active {
+    transform: translateY(0);
+}
+
+/* Адаптивність */
+@media (max-width: 600px) {
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-input {
+        width: auto;
+    }
 }
 
 /* Прибираємо старі стилі кнопок фільтрації, вони більше не потрібні */
