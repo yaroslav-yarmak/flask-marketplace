@@ -16,7 +16,7 @@ body {
 .navbar {
     width: calc(100% - 32px);
     max-width: 1400px;
-    background: rgba(30, 27, 75, 0.88);
+    background: rgba(10, 8, 28, 0.88);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 12px 24px;
@@ -32,16 +32,23 @@ body {
     transform: translateX(-50%);
     z-index: 1000;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(184, 142, 72, 0.4);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .logo {
     font-size: 1.4rem;
     font-weight: 800;
-    color: #ffffff;
     text-decoration: none;
     flex-shrink: 0;
+}
+
+.logo-my {
+    color: #f5f0e1;
+}
+
+.logo-market {
+    color: #d4a84b;
 }
 
 .navbar-center {
@@ -72,28 +79,28 @@ body {
 
 .nav-links a {
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.8);
+    color: #e6d7b8;
     font-weight: 600;
     font-size: 0.95rem;
     transition: color 0.2s;
 }
 
 .nav-links a:hover {
-    color: #ffffff;
+    color: #f5e6c8;
 }
 
 .logout-link {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fca5a5 !important;
+    background: rgba(60, 20, 20, 0.4);
+    color: #e89090 !important;
     padding: 6px 14px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(220, 80, 80, 0.3);
     transition: background 0.2s, color 0.2s;
 }
 
 .logout-link:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #fecaca !important;
+    background: rgba(80, 30, 30, 0.5);
+    color: #f0a0a0 !important;
 }
 
 /* --- КОНТЕЙНЕР --- */
@@ -108,7 +115,7 @@ body {
     align-items: center;
 }
 
-/* === ФІЛЬТР ТОВАРІВ === */
+/* === ФІЛЬТР ТОВАРІВ (в навігації) === */
 .filter-wrapper {
     width: 100%;
     margin-bottom: 20px;
@@ -139,57 +146,65 @@ body {
     padding: 10px 15px;
     font-size: 0.9rem;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: white;
-    color: #333;
+    border: 1px solid rgba(184, 142, 72, 0.35);
+    background: rgba(20, 18, 40, 0.75);
+    color: #e6d7b8;
     font-weight: 500;
     outline: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .search-input::placeholder {
-    color: #999;
+    color: rgba(230, 215, 184, 0.5);
 }
 
 .search-input:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
+    border-color: rgba(184, 142, 72, 0.7);
+    box-shadow: 0 2px 12px rgba(184, 142, 72, 0.15);
 }
 
-/* Категорія (існуючий стиль) */
+/* Категорія та сортування */
 .category-select,
 .sort-select {
     padding: 10px 15px;
     font-size: 0.9rem;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: white;
-    color: #4f46e5;
+    border: 1px solid rgba(184, 142, 72, 0.35);
+    background: rgba(20, 18, 40, 0.75);
+    color: #d4a84b;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     outline: none;
+    appearance: auto;
 }
 
 .category-select:hover,
 .sort-select:hover {
-    background: #f8fafc;
+    background: rgba(30, 27, 55, 0.85);
+    border-color: rgba(184, 142, 72, 0.55);
 }
 
-/* "In stock only" — білий заокруглений контейнер */
+.category-select option,
+.sort-select option {
+    background: #1a1833;
+    color: #d4a84b;
+}
+
+/* "In stock" — темний білий контейнер */
 .stock-label {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
-    background: white;
+    background: rgba(20, 18, 40, 0.75);
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(184, 142, 72, 0.35);
     font-size: 0.9rem;
     font-weight: 600;
-    color: #4f46e5;
+    color: #d4a84b;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     user-select: none;
     height: 42px;
     box-sizing: border-box;
@@ -198,30 +213,31 @@ body {
 .stock-label input[type="checkbox"] {
     width: 16px;
     height: 16px;
-    accent-color: #4f46e5;
+    accent-color: #d4a84b;
     margin: 0;
 }
 
-/* Кнопка Filter — заокруглена, контрастна */
+/* Кнопка Filter — приглушений оливково-зелений */
 .filter-submit {
     padding: 10px 24px;
     font-size: 0.9rem;
     border-radius: 50px;
-    border: none;
-    background: #4f46e5;
-    color: white;
+    border: 1px solid rgba(140, 160, 100, 0.3);
+    background: rgba(85, 105, 60, 0.65);
+    color: #eaeadc;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     transition: all 0.2s ease;
     outline: none;
     line-height: 1;
 }
 
 .filter-submit:hover {
-    background: #4338ca;
+    background: rgba(100, 120, 70, 0.75);
+    border-color: rgba(140, 160, 100, 0.5);
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
 .filter-submit:active {
