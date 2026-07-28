@@ -1,7 +1,7 @@
 from models import Product, db
 
 
-def get_products_by_category(selected_category='all', search=None, sort=None, in_stock_only=False):
+def get_products_by_category(selected_category='all', search=None, sort=None, in_stock_only=False, availability='all', min_price=None, max_price=None):
     query = Product.query
 
     # Category filter
@@ -12,9 +12,21 @@ def get_products_by_category(selected_category='all', search=None, sort=None, in
     if search:
         query = query.filter(Product.title.ilike(f'%{search.strip()}%'))
 
-    # In-stock filter
+    # In-stock filter (legacy param)
     if in_stock_only:
         query = query.filter(Product.stock > 0)
+
+    # Availability filter (new, replaces in_stock_only in sidebar)
+    if availability == 'in_stock':
+        query = query.filter(Product.stock > 0)
+    elif availability == 'out_of_stock':
+        query = query.filter(Product.stock == 0)
+
+    # Price range filter — safely validated
+    if min_price is not None:
+        query = query.filter(Product.price >= min_price)
+    if max_price is not None:
+        query = query.filter(Product.price <= max_price)
 
     # Sorting — allowlist only
     ALLOWED_SORTS = {

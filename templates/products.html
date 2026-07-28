@@ -56,6 +56,9 @@
     <div class="navbar-center">
         <form action="{{ url_for('buyer.products') }}" method="get" class="filter-form">
             <div class="filter-row">
+                <input type="hidden" name="availability" value="{{ availability }}">
+                <input type="hidden" name="min_price" value="{{ min_price }}">
+                <input type="hidden" name="max_price" value="{{ max_price }}">
                 <input type="text" name="search" placeholder="Search..." value="{{ search }}" class="search-input">
 
                 <select name="category" class="category-select">
@@ -69,11 +72,6 @@
                     <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>$ Low-High</option>
                     <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>$ High-Low</option>
                 </select>
-
-                <label class="stock-label">
-                    <input type="checkbox" name="in_stock" value="1" {% if in_stock_only %}checked{% endif %}>
-                    In stock
-                </label>
 
                 <button type="submit" class="filter-submit">Filter</button>
             </div>
@@ -107,28 +105,65 @@
 </div>
 
 <div class="category-cards-wrapper">
-    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, in_stock='1' if in_stock_only else None, category='all', _anchor='products-section') }}" class="category-card {% if current_category == 'all' %}active{% endif %}">
+    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='all', _anchor='products-section') }}" class="category-card {% if current_category == 'all' %}active{% endif %}">
         <span class="category-card-icon">📦</span>
         <span class="category-card-label">All Products</span>
     </a>
-    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, in_stock='1' if in_stock_only else None, category='ELECTRONICS', _anchor='products-section') }}" class="category-card {% if current_category == 'ELECTRONICS' %}active{% endif %}">
+    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='ELECTRONICS', _anchor='products-section') }}" class="category-card {% if current_category == 'ELECTRONICS' %}active{% endif %}">
         <span class="category-card-icon">⚡</span>
         <span class="category-card-label">Electronics</span>
     </a>
-    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, in_stock='1' if in_stock_only else None, category='CLOTHING', _anchor='products-section') }}" class="category-card {% if current_category == 'CLOTHING' %}active{% endif %}">
+    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='CLOTHING', _anchor='products-section') }}" class="category-card {% if current_category == 'CLOTHING' %}active{% endif %}">
         <span class="category-card-icon">👕</span>
         <span class="category-card-label">Clothing</span>
     </a>
 </div>
 
-<div class="container">
-    <div class="products-panel" id="products-section">
+<div class="catalog-layout" id="products-section">
+    <!-- Sidebar: extra filters -->
+    <aside class="filter-sidebar">
+        <h3 class="sidebar-title">Filters</h3>
+
+        <form action="{{ url_for('buyer.products') }}" method="get" id="sidebar-form">
+            <input type="hidden" name="search" value="{{ search }}">
+            <input type="hidden" name="category" value="{{ current_category }}">
+            <input type="hidden" name="sort" value="{{ sort }}">
+
+            <div class="sidebar-group">
+                <label class="sidebar-label">Availability</label>
+                <select name="availability" class="sidebar-select" onchange="this.form.submit()">
+                    <option value="all" {% if availability == 'all' %}selected{% endif %}>All</option>
+                    <option value="in_stock" {% if availability == 'in_stock' %}selected{% endif %}>In stock</option>
+                    <option value="out_of_stock" {% if availability == 'out_of_stock' %}selected{% endif %}>Out of stock</option>
+                </select>
+            </div>
+
+            <div class="sidebar-group">
+                <label class="sidebar-label">Price range</label>
+                <div class="price-range-row">
+                    <input type="number" name="min_price" placeholder="Min" value="{{ min_price }}" class="price-input" min="0" step="0.01">
+                    <span class="price-sep">—</span>
+                    <input type="number" name="max_price" placeholder="Max" value="{{ max_price }}" class="price-input" min="0" step="0.01">
+                </div>
+            </div>
+
+            <button type="submit" class="sidebar-apply-btn">Apply</button>
+        </form>
+
+        {% set has_sidebar_filter = availability != 'all' or min_price or max_price %}
+        {% if has_sidebar_filter %}
+        <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, sort=sort if sort else None) }}" class="sidebar-clear">Clear sidebar filters</a>
+        {% endif %}
+    </aside>
+
+    <!-- Main: products panel -->
+    <div class="products-panel">
         <header class="page-header">
             <h1>Our Products</h1>
             <p>Find the best deals from trusted sellers</p>
         </header>
 
-        {% set has_active_filter = search or current_category != 'all' or sort or in_stock_only %}
+        {% set has_active_filter = search or current_category != 'all' or sort or availability != 'all' or min_price or max_price %}
         <div class="results-toolbar">
             <div class="results-toolbar-top">
                 <span class="results-count">
@@ -136,33 +171,47 @@
                     {%- if items|length == 1 %} product found{% else %} products found{% endif -%}
                 </span>
                 {% if has_active_filter %}
-                <a href="{{ url_for('buyer.products') }}" class="clear-filters">Clear filters</a>
+                <a href="{{ url_for('buyer.products') }}" class="clear-filters">Clear all filters</a>
                 {% endif %}
             </div>
             {% if has_active_filter %}
             <div class="filter-chips">
                 {% if search %}
-                <a href="{{ url_for('buyer.products', category=current_category if current_category != 'all' else None, sort=sort if sort else None, in_stock='1' if in_stock_only else None) }}" class="filter-chip">
+                <a href="{{ url_for('buyer.products', category=current_category if current_category != 'all' else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None) }}" class="filter-chip">
                     Search: {{ search }} <span class="chip-remove">&times;</span>
                 </a>
                 {% endif %}
                 {% if current_category != 'all' %}
-                <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, in_stock='1' if in_stock_only else None) }}" class="filter-chip">
+                <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None) }}" class="filter-chip">
                     Category: {{ current_category | capitalize }} <span class="chip-remove">&times;</span>
                 </a>
                 {% endif %}
                 {% if sort == 'price_asc' %}
-                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, in_stock='1' if in_stock_only else None) }}" class="filter-chip">
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None) }}" class="filter-chip">
                     Price: Low to High <span class="chip-remove">&times;</span>
                 </a>
                 {% elif sort == 'price_desc' %}
-                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, in_stock='1' if in_stock_only else None) }}" class="filter-chip">
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None) }}" class="filter-chip">
                     Price: High to Low <span class="chip-remove">&times;</span>
                 </a>
                 {% endif %}
-                {% if in_stock_only %}
-                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, sort=sort if sort else None) }}" class="filter-chip">
-                    In stock only <span class="chip-remove">&times;</span>
+                {% if availability == 'in_stock' %}
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, sort=sort if sort else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None) }}" class="filter-chip">
+                    In stock <span class="chip-remove">&times;</span>
+                </a>
+                {% elif availability == 'out_of_stock' %}
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, sort=sort if sort else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None) }}" class="filter-chip">
+                    Out of stock <span class="chip-remove">&times;</span>
+                </a>
+                {% endif %}
+                {% if min_price %}
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, max_price=max_price if max_price else None) }}" class="filter-chip">
+                    Min: ${{ min_price }} <span class="chip-remove">&times;</span>
+                </a>
+                {% endif %}
+                {% if max_price %}
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None) }}" class="filter-chip">
+                    Max: ${{ max_price }} <span class="chip-remove">&times;</span>
                 </a>
                 {% endif %}
             </div>
@@ -206,5 +255,6 @@
     </div>
 </div>
 
+</div>
 </body>
 </html>
