@@ -113,6 +113,47 @@
             <p>Find the best deals from trusted sellers</p>
         </header>
 
+        {% set has_active_filter = search or current_category != 'all' or sort or in_stock_only %}
+        <div class="results-toolbar">
+            <div class="results-toolbar-top">
+                <span class="results-count">
+                    {{ items|length }}
+                    {%- if items|length == 1 %} product found{% else %} products found{% endif -%}
+                </span>
+                {% if has_active_filter %}
+                <a href="{{ url_for('buyer.products') }}" class="clear-filters">Clear filters</a>
+                {% endif %}
+            </div>
+            {% if has_active_filter %}
+            <div class="filter-chips">
+                {% if search %}
+                <a href="{{ url_for('buyer.products', category=current_category if current_category != 'all' else None, sort=sort if sort else None, in_stock='1' if in_stock_only else None) }}" class="filter-chip">
+                    Search: {{ search }} <span class="chip-remove">&times;</span>
+                </a>
+                {% endif %}
+                {% if current_category != 'all' %}
+                <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, in_stock='1' if in_stock_only else None) }}" class="filter-chip">
+                    Category: {{ current_category | capitalize }} <span class="chip-remove">&times;</span>
+                </a>
+                {% endif %}
+                {% if sort == 'price_asc' %}
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, in_stock='1' if in_stock_only else None) }}" class="filter-chip">
+                    Price: Low to High <span class="chip-remove">&times;</span>
+                </a>
+                {% elif sort == 'price_desc' %}
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, in_stock='1' if in_stock_only else None) }}" class="filter-chip">
+                    Price: High to Low <span class="chip-remove">&times;</span>
+                </a>
+                {% endif %}
+                {% if in_stock_only %}
+                <a href="{{ url_for('buyer.products', search=search if search else None, category=current_category if current_category != 'all' else None, sort=sort if sort else None) }}" class="filter-chip">
+                    In stock only <span class="chip-remove">&times;</span>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
         <div class="product-grid">
             {% for product in items %}
             <div class="product-card">

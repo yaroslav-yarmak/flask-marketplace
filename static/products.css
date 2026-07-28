@@ -263,7 +263,7 @@ body {
 /* --- ЗАГОЛОВОК СТОРІНКИ --- */
 .page-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
     color: white;
 }
 
@@ -277,6 +277,86 @@ body {
     margin: 0;
     font-size: 1.1rem;
     color: rgba(230, 215, 184, 0.7);
+}
+
+/* --- ПАНЕЛЬ РЕЗУЛЬТАТІВ ТА ФІЛЬТРІВ --- */
+.results-toolbar {
+    margin-bottom: 20px;
+}
+
+.results-toolbar-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.results-count {
+    font-size: 0.9rem;
+    color: rgba(230, 215, 184, 0.7);
+    font-weight: 600;
+}
+
+.clear-filters {
+    font-size: 0.85rem;
+    color: #e89090;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(220, 80, 80, 0.2);
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.clear-filters:hover {
+    background: rgba(220, 80, 80, 0.1);
+    border-color: rgba(220, 80, 80, 0.35);
+}
+
+.filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(20, 18, 40, 0.7);
+    border: 1px solid rgba(184, 142, 72, 0.25);
+    border-radius: 8px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: #e6d7b8;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.filter-chip:hover {
+    background: rgba(30, 27, 55, 0.85);
+    border-color: rgba(184, 142, 72, 0.45);
+}
+
+.chip-remove {
+    font-size: 1.1rem;
+    line-height: 1;
+    color: rgba(230, 215, 184, 0.5);
+    transition: color 0.2s;
+}
+
+.filter-chip:hover .chip-remove {
+    color: #e89090;
+}
+
+@media (max-width: 600px) {
+    .results-toolbar-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 /* --- СІТКА ТОВАРІВ --- */
