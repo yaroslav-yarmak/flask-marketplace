@@ -612,116 +612,6 @@ body {
     z-index: 1;
 }
 
-/* --- ГЕРОЙСЬКА ОБЛАСТЬ (текст поверх фону) --- */
-.hero-area {
-    position: relative;
-    width: 100%;
-    min-height: 460px;
-    display: flex;
-    align-items: center;
-    padding-top: 90px;
-}
-
-.hero-area::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, rgba(5, 3, 18, 0.7) 0%, rgba(5, 3, 18, 0.3) 50%, transparent 100%);
-    pointer-events: none;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 60px;
-}
-
-.hero-title {
-    font-size: 2.6rem;
-    font-weight: 800;
-    color: #f5f0e1;
-    margin: 0 0 16px 0;
-    line-height: 1.2;
-    max-width: 600px;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-}
-
-.hero-desc {
-    font-size: 1.05rem;
-    color: rgba(230, 215, 184, 0.85);
-    margin: 0 0 28px 0;
-    line-height: 1.5;
-    max-width: 520px;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
-}
-
-.hero-btn {
-    display: inline-block;
-    padding: 12px 32px;
-    background: rgba(184, 142, 72, 0.25);
-    color: #f5f0e1;
-    border: 1px solid rgba(184, 142, 72, 0.5);
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: background 0.2s, border-color 0.2s, transform 0.2s;
-    cursor: pointer;
-    backdrop-filter: blur(4px);
-}
-
-.hero-btn:hover {
-    background: rgba(184, 142, 72, 0.4);
-    border-color: rgba(184, 142, 72, 0.7);
-    transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-    .hero-area {
-        min-height: 320px;
-    }
-    .hero-content {
-        padding: 0 32px;
-    }
-    .hero-title {
-        font-size: 1.8rem;
-    }
-    .hero-desc {
-        font-size: 0.9rem;
-        margin-bottom: 20px;
-    }
-    .hero-btn {
-        padding: 10px 24px;
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-area {
-        min-height: 260px;
-    }
-    .hero-content {
-        padding: 0 20px;
-    }
-    .hero-title {
-        font-size: 1.4rem;
-    }
-    .hero-desc {
-        font-size: 0.82rem;
-    }
-    .hero-btn {
-        padding: 8px 20px;
-        font-size: 0.82rem;
-    }
-}
-
 /* --- КАТЕГОРІЇ — КАРТКИ ШВИДКОГО ВИБОРУ --- */
 .category-cards-wrapper {
     display: flex;
@@ -729,7 +619,7 @@ body {
     gap: 12px;
     width: calc(100% - 32px);
     max-width: 1400px;
-    margin: 24px auto 0;
+    margin: 96px auto 0;
     padding: 0;
     box-sizing: border-box;
 }
@@ -760,9 +650,9 @@ body {
 }
 
 .category-card.active {
-    background: rgba(184, 142, 72, 0.15);
-    border-color: rgba(184, 142, 72, 0.5);
-    box-shadow: 0 2px 12px rgba(184, 142, 72, 0.1);
+    background: rgba(10, 8, 28, 0.92);
+    border-color: rgba(212, 168, 75, 0.65);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(212, 168, 75, 0.12);
 }
 
 .category-card-icon {

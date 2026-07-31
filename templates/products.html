@@ -96,24 +96,16 @@
     {% endwith %}
 </div>
 
-<div class="hero-area">
-    <div class="hero-content">
-        <h1 class="hero-title">Everything you need in one place</h1>
-        <p class="hero-desc">Discover useful products from trusted sellers. Quality, variety and great prices — all in one place.</p>
-        <a href="#products-section" class="hero-btn">Explore products</a>
-    </div>
-</div>
-
 <div class="category-cards-wrapper">
-    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='all', _anchor='products-section') }}" class="category-card {% if current_category == 'all' %}active{% endif %}">
+    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='all') }}" class="category-card {% if current_category == 'all' %}active{% endif %}">
         <span class="category-card-icon">📦</span>
         <span class="category-card-label">All Products</span>
     </a>
-    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='ELECTRONICS', _anchor='products-section') }}" class="category-card {% if current_category == 'ELECTRONICS' %}active{% endif %}">
+    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='ELECTRONICS') }}" class="category-card {% if current_category == 'ELECTRONICS' %}active{% endif %}">
         <span class="category-card-icon">⚡</span>
         <span class="category-card-label">Electronics</span>
     </a>
-    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='CLOTHING', _anchor='products-section') }}" class="category-card {% if current_category == 'CLOTHING' %}active{% endif %}">
+    <a href="{{ url_for('buyer.products', search=search if search else None, sort=sort if sort else None, availability=availability if availability != 'all' else None, min_price=min_price if min_price else None, max_price=max_price if max_price else None, category='CLOTHING') }}" class="category-card {% if current_category == 'CLOTHING' %}active{% endif %}">
         <span class="category-card-icon">👕</span>
         <span class="category-card-label">Clothing</span>
     </a>
