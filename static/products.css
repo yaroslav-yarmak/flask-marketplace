@@ -362,7 +362,7 @@ body {
 /* --- СІТКА ТОВАРІВ --- */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     width: 100%;
 }
@@ -697,9 +697,9 @@ html {
 /* --- CATALOG LAYOUT: sidebar + products two-column --- */
 .catalog-layout {
     display: flex;
-    gap: 24px;
-    width: calc(100% - 32px);
-    max-width: 1400px;
+    gap: 22px;
+    width: calc(100% - 48px);
+    max-width: 1920px;
     margin: 28px auto 40px;
     padding: 0;
     box-sizing: border-box;
