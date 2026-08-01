@@ -2,94 +2,170 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Orders - Seller Panel</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='seller_orders.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Orders - Seller Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='seller_orders_page.css') }}">
 </head>
+
 <body>
-<div class="admin-container">
-    <aside class="admin-sidebar">
-        <div class="sidebar-header"><h2>Seller Panel</h2></div>
-        <nav>
-            <ul>
-                <li><a href="/dashboard">📦 My Products</a></li>
-                <li class="active"><a href="/orders">🛒 Orders</a></li>
-                <hr>
-                <li><a href="/logout" class="logout">Logout</a></li>
-            </ul>
+
+<!-- Summary stats computed from existing orders data only -->
+{% set ns = namespace(pending=0, in_progress=0, delivered=0) %}
+{% for order in orders %}
+    {% if order.status == 'Pending' %}
+        {% set ns.pending = ns.pending + 1 %}
+    {% elif order.status == 'Processing' or order.status == 'Shipped' %}
+        {% set ns.in_progress = ns.in_progress + 1 %}
+    {% elif order.status == 'Delivered' %}
+        {% set ns.delivered = ns.delivered + 1 %}
+    {% endif %}
+{% endfor %}
+
+<div class="dashboard-wrap">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark">M</span>
+            <span class="brand-text">My<span>Market</span></span>
+        </div>
+        <p class="brand-sub">Seller Panel</p>
+
+        <nav class="nav">
+            <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">
+                <span class="nav-icon">📦</span>
+                <span>My Products</span>
+            </a>
+
+            <a href="/add-product" class="nav-link {% if request.path == '/add-product' %}active{% endif %}">
+                <span class="nav-icon">➕</span>
+                <span>Add Product</span>
+            </a>
+
+            <a href="/orders" class="nav-link {% if request.path == '/orders' %}active{% endif %}">
+                <span class="nav-icon">🛒</span>
+                <span>Orders</span>
+            </a>
         </nav>
+
+        <div class="sidebar-footer">
+            <a href="/logout" class="nav-link logout-link">Logout</a>
+        </div>
     </aside>
 
-    <main class="admin-main">
-        <header>
-            <h1>Customer Orders</h1>
-            <p>Track and manage your sales</p>
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="top-bar">
+            <div class="title-block">
+                <h1>Customer Orders</h1>
+                <p class="subtitle">Track and manage your sales</p>
+            </div>
         </header>
-        <div style="position: relative;">
+
+        <div class="flash-container">
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
-                <div style="position: absolute; top: -60px; right: 0; z-index: 1000; min-width: 300px;">
-                  {% for category, message in messages %}
-                    <div style="padding: 12px 20px; border-radius: 8px; background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9em; animation: fadeInRight 0.5s ease-out;">
-                      ✅ {{ message }}
-                    </div>
-                  {% endfor %}
-                </div>
+                {% for category, message in messages %}
+                  <div class="flash-item flash-{{ category if category != 'message' else 'success' }}">
+                    ✅ {{ message }}
+                  </div>
+                {% endfor %}
               {% endif %}
             {% endwith %}
         </div>
 
-        <style>
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        </style>
-        <table class="orders-table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Product</th>
-                    <th>Customer Details</th>
-                    <th style="text-align: center;">Status</th>
-                    <th style="text-align: center;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                <tr>
-                    <td>#{{ order.id }}</td>
-                    <td>
-                        <strong>{{ order.product.title }}</strong>
-                        <div style="color: #6366f1; font-weight: 600;">${{ order.product.price }}</div>
-                    </td>
-                    <td class="customer-info">
-                        <strong>{{ order.full_name }}</strong>
-                        <span>{{ order.phone }}</span>
-                        <small>{{ order.address }}</small>
-                    </td>
-                    <td style="text-align: center;">
-                        <span class="status-badge status-{{ order.status.lower() }}">
-                            {{ order.status }}
-                        </span>
-                    </td>
-                    <td style="text-align: center;">
-                        <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Processing') }}" class="action-btn">Process</a>
-                        <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Shipped') }}" class="action-btn">Ship</a>
-                        <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Delivered') }}" class="action-btn">Deliver</a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="5" style="padding: 50px; text-align: center; color: #9ca3af;">
-                        <div style="font-size: 3em; margin-bottom: 10px;">📦</div>
-                        No orders received yet.
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- SUMMARY CARDS -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-body">
+                    <p class="stat-label">Total Orders</p>
+                    <p class="stat-value">{{ orders|length }}</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-body">
+                    <p class="stat-label">Pending</p>
+                    <p class="stat-value">{{ ns.pending }}</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⚙️</div>
+                <div class="stat-body">
+                    <p class="stat-label">In Progress</p>
+                    <p class="stat-value">{{ ns.in_progress }}</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-body">
+                    <p class="stat-label">Delivered</p>
+                    <p class="stat-value">{{ ns.delivered }}</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORDERS TABLE -->
+        {% if orders %}
+
+        <div class="orders-panel">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Product</th>
+                        <th>Customer Details</th>
+                        <th class="status-cell">Status</th>
+                        <th class="actions-cell">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td class="order-id">#{{ order.id }}</td>
+                        <td class="product-cell">
+                            <strong>{{ order.product.title }}</strong>
+                            <div class="product-price">${{ order.product.price }}</div>
+                        </td>
+                        <td class="customer-info">
+                            <strong>{{ order.full_name }}</strong>
+                            <span>{{ order.phone }}</span>
+                            <small>{{ order.address }}</small>
+                        </td>
+                        <td class="status-cell">
+                            <span class="status-badge status-{{ order.status.lower() }}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td class="actions-cell">
+                            <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Processing') }}" class="action-btn">Process</a>
+                            <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Shipped') }}" class="action-btn">Ship</a>
+                            <a href="{{ url_for('seller.update_order_status_route', order_id=order.id, status='Delivered') }}" class="action-btn">Deliver</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            <h2>No orders received yet</h2>
+            <p>When customers place orders, they will appear here for you to manage.</p>
+        </div>
+
+        {% endif %}
+
     </main>
+
 </div>
+
 </body>
 </html>
