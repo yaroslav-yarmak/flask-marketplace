@@ -1,54 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="login-page">
-  <div class="login-card">
+<div class="page-bg" style="background-image: url('{{ url_for('static', filename='images/auth-japanese-shop.png') }}');"></div>
 
-    <div class="login-header">
+<div class="page-wrapper">
+  <div class="login-page">
+    <div class="login-card">
+
+      <div class="login-header">
         <h2>Create account</h2>
         <p>Choose your account type to log in</p>
-    </div>
+      </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
 
-    <div class="role-switcher">
+      <div class="role-switcher">
         <button type="button" class="role-btn active" onclick="setRole('buyer', this)">🛒 Buyer</button>
         <button type="button" class="role-btn" onclick="setRole('seller', this)">📦 Seller</button>
-    </div>
+      </div>
 
-    <form method="POST" class="login-form">
+      <form method="POST" class="login-form">
         <input type="hidden" name="role" id="role" value="buyer">
 
         <div class="input-group">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="name@example.com" required>
+          <label>Email</label>
+          <input type="email" name="email" placeholder="name@example.com" required>
         </div>
 
         <div class="input-group">
-            <label>Password</label>
-            <input type="password" name="password" required>
+          <label>Password</label>
+          <input type="password" name="password" required>
         </div>
 
         <button type="submit" class="login-btn">Register</button>
-    </form>
+      </form>
 
-    <div class="login-footer">
+      <div class="login-footer">
         <p>Already have an account? <a href="/login">Log in</a></p>
-    </div>
+      </div>
 
+    </div>
   </div>
 </div>
 

@@ -1,192 +1,329 @@
+/* =========================================================
+   AUTH PAGES — Japanese Marketplace Theme
+   Shared by login.html and register.html only.
+   ========================================================= */
+
+/* --- BASE --- */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #070615;
+    min-height: 100vh;
+    color: #f5f0e1;
 }
 
+/* --- FULL-PAGE BACKGROUND LAYER --- */
+.login-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.page-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #070615; /* Dark fallback if the image is missing */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Dark overlay / gradient for readability */
+.page-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(7, 6, 21, 0.55) 0%, rgba(7, 6, 21, 0.72) 100%);
+    pointer-events: none;
+}
+
+/* --- CONTENT WRAPPER ABOVE THE BACKGROUND --- */
+.page-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    box-sizing: border-box;
+}
+
+/* --- GLASS CARD --- */
 .login-card {
-  background: white;
-
-  /* Змінюємо ці два рядки: */
-  width: 550px;           /* Фіксована ширина */
-  max-width: 95%;         /* Залишаємо для адаптивності на мобільних */
-
-  /* Твої поточні правила */
-  min-height: 620px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 50px;
-  border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  box-sizing: border-box;
+    width: 460px;
+    max-width: 100%;
+    box-sizing: border-box;
+    background: rgba(10, 8, 28, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(184, 142, 72, 0.35);
+    border-radius: 20px;
+    padding: 48px 40px;
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(184, 142, 72, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
+/* --- HEADER --- */
 .login-header {
-  text-align: center;
-  margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 28px;
 }
 
 .login-header h2 {
-  margin: 0;
-  color: #1a202c;
-  font-size: 24px;
+    margin: 0 0 6px 0;
+    color: #f5f0e1;
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.2;
 }
 
 .login-header p {
-  color: #718096;
-  font-size: 14px;
-  margin-top: 8px;
+    margin: 0;
+    color: rgba(230, 215, 184, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.4;
 }
 
+/* --- BUYER/SELLER SEGMENTED CONTROL --- */
 .role-switcher {
-  display: flex;
-  background: #f7fafc;
-  padding: 5px;
-  border-radius: 12px;
-  margin-bottom: 25px;
-  border: 1px solid #edf2f7;
+    display: flex;
+    gap: 4px;
+    background: rgba(20, 18, 40, 0.75);
+    border: 1px solid rgba(184, 142, 72, 0.35);
+    border-radius: 12px;
+    padding: 5px;
+    margin-bottom: 26px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .role-btn {
-  flex: 1;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14px;
-  color: #718096;
-  background: transparent;
-  transition: 0.3s;
+    flex: 1;
+    border: 1px solid transparent;
+    padding: 11px 10px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: rgba(230, 215, 184, 0.75);
+    background: transparent;
+    transition: background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    outline: none;
+    font-family: inherit;
+}
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.role-btn:hover {
+    color: #f5f0e1;
+    background: rgba(30, 27, 55, 0.6);
+}
 
-  white-space: nowrap; /* 🔥 ОСЬ ГОЛОВНЕ */
+.role-btn:focus-visible {
+    border-color: rgba(184, 142, 72, 0.6);
+    box-shadow: 0 0 0 3px rgba(184, 142, 72, 0.12);
 }
 
 .role-btn.active {
-  background: white;
-  color: #4f46e5;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    background: linear-gradient(135deg, rgba(184, 142, 72, 0.28) 0%, rgba(140, 100, 45, 0.22) 100%);
+    color: #d4a84b;
+    border-color: rgba(184, 142, 72, 0.5);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.3),
+        inset 0 0 12px rgba(184, 142, 72, 0.08);
+}
+
+/* --- FORM --- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
 }
 
 .input-group {
-  margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .input-group label {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #4a5568;
-  margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e6d7b8;
 }
 
 .input-group input {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 16px;
-  box-sizing: border-box;
-  outline: none;
-  transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #f5f0e1;
+    background: rgba(20, 18, 40, 0.75);
+    border: 1px solid rgba(184, 142, 72, 0.35);
+    border-radius: 10px;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input::placeholder {
+    color: rgba(230, 215, 184, 0.5);
+}
+
+.input-group input:hover {
+    border-color: rgba(184, 142, 72, 0.55);
 }
 
 .input-group input:focus {
-  border-color: #4f46e5;
+    border-color: rgba(184, 142, 72, 0.7);
+    box-shadow: 0 0 0 3px rgba(184, 142, 72, 0.12), 0 2px 12px rgba(184, 142, 72, 0.15);
 }
 
-.form-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-  margin-bottom: 25px;
-  color: #718096;
-}
-
-.forgot-link {
-  color: #4f46e5;
-  text-decoration: none;
-}
-
+/* --- PRIMARY BUTTON (gold-brown CTA matching Checkout) --- */
 .login-btn {
-  width: 100%;
-  background: #4f46e5;
-  color: white;
-  border: none;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #f5f0e1;
+    background: linear-gradient(135deg, rgba(184, 142, 72, 0.35) 0%, rgba(140, 100, 45, 0.3) 100%);
+    border: 1px solid rgba(184, 142, 72, 0.55);
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    font-family: inherit;
+    margin-top: 4px;
 }
 
 .login-btn:hover {
-  background: #4338ca;
-  transform: translateY(-1px);
+    background: linear-gradient(135deg, rgba(184, 142, 72, 0.5) 0%, rgba(160, 115, 55, 0.42) 100%);
+    border-color: rgba(184, 142, 72, 0.75);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.4);
 }
 
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.login-btn:focus-visible {
+    outline: 2px solid rgba(184, 142, 72, 0.7);
+    outline-offset: 2px;
+}
+
+/* --- FOOTER LINK --- */
 .login-footer {
-  text-align: center;
-  margin-top: 25px;
-  font-size: 14px;
-  color: #718096;
+    text-align: center;
+    margin-top: 26px;
+    font-size: 0.9rem;
+    color: rgba(230, 215, 184, 0.7);
 }
 
 .login-footer a {
-  color: #4f46e5;
-  text-decoration: none;
-  font-weight: 600;
+    color: #d4a84b;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
 }
 
-/*//////////////////////////*login_error*/
-
-.login-footer a {
-  color: #4f46e5;
-  text-decoration: none;
-  font-weight: 600;
+.login-footer a:hover {
+    color: #f5e6c8;
 }
 
-/* --- НОВІ СТИЛІ ДЛЯ ПОВІДОМЛЕНЬ --- */
+.login-footer a:focus-visible {
+    outline: 2px solid rgba(184, 142, 72, 0.6);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* --- FLASH MESSAGES (dark translucent, matching theme) --- */
 .alert {
-  padding: 12px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  font-size: 14px;
-  text-align: center;
-  font-weight: 600;
-  animation: fadeIn 0.3s ease; /* Додав легку анімацію для професійності */
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.4;
+    box-sizing: border-box;
+    animation: fadeIn 0.3s ease;
+    border: 1px solid rgba(184, 142, 72, 0.25);
+    background: rgba(20, 18, 40, 0.6);
+    color: #e6d7b8;
 }
 
 .alert-danger {
-  background-color: #fed7d7;
-  color: #c53030;
-  border: 1px solid #feb2b2;
+    background: rgba(120, 40, 40, 0.35);
+    color: #f0b0b0;
+    border: 1px solid rgba(200, 80, 80, 0.35);
+}
+
+.alert-success {
+    background: rgba(40, 110, 60, 0.3);
+    color: #a9d8b4;
+    border: 1px solid rgba(70, 150, 90, 0.35);
+}
+
+.alert-warning {
+    background: rgba(120, 95, 40, 0.3);
+    color: #ead9a8;
+    border: 1px solid rgba(190, 155, 60, 0.35);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* У style.css */
-:root {
-  --primary-color: #4f46e5;
-  --text-gray: #718096;
-}
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+    .page-wrapper {
+        padding: 16px 12px;
+    }
 
-/* У products.css тепер можна використовувати змінну */
-.buy-btn {
-  background: var(--primary-color);
+    .login-card {
+        padding: 34px 20px;
+        border-radius: 16px;
+    }
+
+    .login-header h2 {
+        font-size: 1.55rem;
+    }
+
+    .login-header p {
+        font-size: 0.88rem;
+    }
+
+    .role-btn {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+        gap: 6px;
+    }
 }
