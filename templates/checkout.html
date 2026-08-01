@@ -2,48 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Checkout - {{ product.name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - {{ product.title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='checkout.css') }}">
 </head>
 <body>
 
-<div class="checkout-container">
-    <div class="checkout-card">
-        <a href="/products" class="back-link">← Back to Products</a>
+<div class="page-bg" style="background-image: url('{{ url_for('static', filename='images/checkout-japanese-shop.png') }}');"></div>
 
-        <h2>Checkout</h2>
+<div class="page-wrapper">
+    <div class="checkout-container">
+        <div class="checkout-card">
+            <a href="/products" class="back-btn">
+                <span class="back-arrow">←</span> Back to Products
+            </a>
 
-        <div class="order-summary">
-            <div class="product-preview">
-                <span class="box-icon">📦</span>
-                <div>
-                    <h3>{{ product.name }}</h3>
-                    <p class="category">{{ product.category if product.category else 'General' }}</p>
+            <header class="checkout-header">
+                <h2>Checkout</h2>
+                <p class="checkout-subtitle">Complete your order securely</p>
+            </header>
+
+            <div class="checkout-layout">
+                <!-- Product summary (existing data only: image, title, category, price, stock) -->
+                <div class="order-summary">
+                    <p class="summary-title">Order Summary</p>
+
+                    <div class="product-image-container">
+                        {% if product.image_file and product.image_file != 'default.jpg' %}
+                            <img src="{{ url_for('static', filename='uploads/' + product.image_file) }}"
+                                 alt="{{ product.title }}" class="product-img">
+                        {% else %}
+                            <div class="no-image">📦</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="product-info">
+                        <span class="category">{{ product.category if product.category else 'General' }}</span>
+                        <h3>{{ product.title }}</h3>
+                        {% set stock = product.stock if product.stock else 0 %}
+                        <p class="stock-info">
+                            <span class="stock-badge {% if stock > 0 %}in-stock{% else %}out-of-stock{% endif %}">
+                                {{ 'In stock' if stock > 0 else 'Out of stock' }}: {{ stock }}
+                            </span>
+                        </p>
+                        <div class="total-price">
+                            <span class="price-label">Total</span>
+                            <span class="price">${{ product.price }}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="total-price">
-                Total: <span>${{ product.price }}</span>
+
+                <!-- Checkout form: method, action behavior, field names and validation unchanged -->
+                <form class="checkout-form" method="POST">
+                    <div class="form-group">
+                        <label for="full_name">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+1..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Shipping Address</label>
+                        <textarea id="address" name="address" placeholder="City, Street, Zip Code" rows="3" required></textarea>
+                    </div>
+
+                    <button type="submit" class="confirm-btn">Confirm Order</button>
+                </form>
             </div>
         </div>
-
-        <form class="checkout-form" method="POST">
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" name="full_name" placeholder="John Doe" required>
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" name="phone" placeholder="+1..." required>
-            </div>
-            <div class="form-group">
-                <label>Shipping Address</label>
-                <textarea name="address" placeholder="City, Street, Zip Code" rows="3" required></textarea>
-            </div>
-
-            <button type="submit" class="confirm-btn">
-                Confirm Order
-            </button>
-        </form>
     </div>
 </div>
 
