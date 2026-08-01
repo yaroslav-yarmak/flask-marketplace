@@ -1,71 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Product</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Seller Panel</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='add_product.css') }}">
 </head>
 
 <body>
 
-<div class="admin-container">
+<div class="dashboard-wrap">
 
-    <aside class="admin-sidebar">
-        <nav>
-            <ul>
-                <li><a href="/dashboard">My Shop</a></li>
-                <li class="active">Add Product</li>
-                <li>Orders</li>
-            </ul>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark">M</span>
+            <span class="brand-text">My<span>Market</span></span>
+        </div>
+        <p class="brand-sub">Seller Panel</p>
+
+        <nav class="nav">
+            <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">
+                <span class="nav-icon">📦</span>
+                <span>My Products</span>
+            </a>
+
+            <a href="/add-product" class="nav-link {% if request.path == '/add-product' %}active{% endif %}">
+                <span class="nav-icon">➕</span>
+                <span>Add Product</span>
+            </a>
+
+            <a href="/orders" class="nav-link {% if request.path == '/orders' %}active{% endif %}">
+                <span class="nav-icon">🛒</span>
+                <span>Orders</span>
+            </a>
         </nav>
+
+        <div class="sidebar-footer">
+            <a href="/logout" class="nav-link logout-link">Logout</a>
+        </div>
     </aside>
 
-    <main class="admin-content">
-        <h1>Add New Product</h1>
+    <!-- MAIN -->
+    <main class="main">
 
-        <form class="product-form" method="POST" enctype="multipart/form-data" action="/add-product">
+        <header class="top-bar">
+            <div class="title-block">
+                <h1>Add New Product</h1>
+                <p class="subtitle">Create a product listing for your shop</p>
+            </div>
+        </header>
 
-            <div>
-                <label>Media</label>
+        <form class="product-form" method="POST" action="/add-product" enctype="multipart/form-data">
+
+            <!-- Media / upload -->
+            <div class="form-left">
+                <label class="field-label">Media</label>
                 <div class="upload-zone">
-                    📸
-                    <p>Upload Product Image</p>
+                    <div class="upload-icon">📸</div>
+                    <p class="upload-title">Upload Product Image</p>
+                    <p class="upload-hint">Supports PNG, JPG, JPEG or GIF</p>
                     <input type="file" name="image" accept="image/*" required>
                 </div>
+                <p class="form-note">All required fields must be completed before saving.</p>
             </div>
 
-            <div>
+            <!-- Fields -->
+            <div class="form-right">
                 <div class="input-group">
-                    <label>Title</label>
-                    <input type="text" name="title" placeholder="Product title" required>
+                    <label class="field-label" for="title">Title</label>
+                    <input type="text" id="title" name="title" placeholder="Product title" required>
                 </div>
 
                 <div class="input-row">
                     <div class="input-group">
-                        <label>Price</label>
-                        <input type="number" name="price" step="0.01" required>
+                        <label class="field-label" for="price">Price</label>
+                        <input type="number" id="price" name="price" step="0.01" placeholder="0.00" required>
                     </div>
 
                     <div class="input-group">
-                        <label>Stock</label>
-                        <input type="number" name="stock" required>
+                        <label class="field-label" for="stock">Stock</label>
+                        <input type="number" id="stock" name="stock" placeholder="0" required>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label>Category</label>
-                    <select name="category" required>
+                    <label class="field-label" for="category">Category</label>
+                    <select id="category" name="category" required>
                         <option value="ELECTRONICS">Electronics</option>
                         <option value="CLOTHING">Clothing</option>
                     </select>
                 </div>
 
                 <div class="input-group">
-                    <label>Description</label>
-                    <textarea name="desc" placeholder="Write something about your product..."></textarea>
+                    <label class="field-label" for="desc">Description</label>
+                    <textarea id="desc" name="desc" placeholder="Write something about your product..." rows="5"></textarea>
                 </div>
 
                 <div class="form-actions">
-                    <a href="/dashboard" class="btn-cancel" style="text-decoration: none; text-align: center; display: inline-block; line-height: 40px;">Cancel</a>
+                    <a href="/dashboard" class="btn-cancel">Cancel</a>
                     <button type="submit" class="btn-save">Save Product</button>
                 </div>
             </div>
