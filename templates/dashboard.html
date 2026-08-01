@@ -1,87 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seller Dashboard</title>
 
     <!-- CSS ПІДКЛЮЧЕННЯ -->
-    <<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
 </head>
 
 <body>
 
-<div class="container">
+<!-- Summary stats computed from existing product data only -->
+{% set ns = namespace(total_stock=0, low_stock=0) %}
+{% for product in products %}
+    {% set stock = product.stock if product.stock else 0 %}
+    {% set ns.total_stock = ns.total_stock + stock %}
+    {% if stock <= 5 %}
+        {% set ns.low_stock = ns.low_stock + 1 %}
+    {% endif %}
+{% endfor %}
+
+<div class="dashboard-wrap">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-    <h2>Seller Panel</h2>
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark">M</span>
+            <span class="brand-text">My<span>Market</span></span>
+        </div>
+        <p class="brand-sub">Seller Panel</p>
 
-    <a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">
-        📦 My Products
-    </a>
+        <nav class="nav">
+            <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">
+                <span class="nav-icon">📦</span>
+                <span>My Products</span>
+            </a>
 
-    <a href="/add-product" class="{% if request.path == '/add-product' %}active{% endif %}">
-        ➕ Add Product
-    </a>
+            <a href="/add-product" class="nav-link {% if request.path == '/add-product' %}active{% endif %}">
+                <span class="nav-icon">➕</span>
+                <span>Add Product</span>
+            </a>
 
-    <a href="/orders" class="{% if request.path == '/orders' %}active{% endif %}">
-        🛒 Orders
-    </a>
+            <a href="/orders" class="nav-link {% if request.path == '/orders' %}active{% endif %}">
+                <span class="nav-icon">🛒</span>
+                <span>Orders</span>
+            </a>
+        </nav>
 
-    <hr style="margin: 20px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.1);">
-
-    <a href="/logout" style="color: #ff4d4d;">Logout</a>
-    </div>
+        <div class="sidebar-footer">
+            <a href="/logout" class="nav-link logout-link">Logout</a>
+        </div>
+    </aside>
 
     <!-- MAIN -->
-    <div class="main">
+    <main class="main">
+
+        <header class="top-bar">
+            <div class="title-block">
+                <h1>My Products</h1>
+                <p class="subtitle">Manage your catalog and inventory</p>
+            </div>
+            <a class="add-btn" href="/add-product">
+                <span class="add-btn-icon">＋</span>
+                <span>Add Product</span>
+            </a>
+        </header>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
+            <div class="flash-container">
             {% for category, message in messages %}
-              <div class="alert alert-{{ category }}" style="padding: 15px; margin-bottom: 20px; border-radius: 8px; border-left: 5px solid {% if category == 'success' %}#28a745{% else %}#dc3545{% endif %}; background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: #333;">
+              <div class="alert alert-{{ category }}">
                 <strong>{{ 'Success!' if category == 'success' else 'Info:' }}</strong> {{ message }}
               </div>
             {% endfor %}
+            </div>
           {% endif %}
         {% endwith %}
 
-        <div class="top-bar">
-            <h1>My Products</h1>
-            <a class="add-btn" href="/add-product">+ Add Product</a>
-        </div>
-
-        {% for product in products %}
-
-        <div class="product-card">
-            <div class="product-main-info">
-                <div class="dashboard-img-container">
-                    {% if product.image_file and product.image_file != 'default.jpg' %}
-                        <img src="{{ url_for('static', filename='uploads/' + product.image_file) }}"
-                             alt="{{ product.title }}" class="dashboard-product-img">
-                    {% else %}
-                        <div class="dashboard-no-image">📦</div>
-                    {% endif %}
-                </div>
-
-                <div class="product-text-details">
-                    <h3>{{ product.title }}</h3>
-                    <p class="product-price">${{ product.price }}</p>
-                    <p class="product-stock"><strong>Stock:</strong> {{ product.stock if product.stock else 0 }} pcs.</p>
-                    <p class="product-desc-short"><small>{{ product.desc[:60] }}{% if product.desc|length > 60 %}...{% endif %}</small></p>
+        <!-- SUMMARY CARDS -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-body">
+                    <p class="stat-label">Total Products</p>
+                    <p class="stat-value">{{ products|length }}</p>
                 </div>
             </div>
 
-            <div class="actions">
-                <a class="edit-link" href="/edit-product/{{ product.id }}">Edit</a>
-                <form method="POST" action="/delete-product/{{ product.id }}" style="display:inline;">
-                    <button class="delete-btn" type="submit">Delete</button>
-                </form>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-body">
+                    <p class="stat-label">Total Stock</p>
+                    <p class="stat-value">{{ ns.total_stock }}</p>
+                </div>
             </div>
-        </div>
 
-        {% endfor %}
+            <div class="stat-card">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-body">
+                    <p class="stat-label">Low Stock</p>
+                    <p class="stat-value">{{ ns.low_stock }}</p>
+                </div>
+            </div>
+        </section>
 
-    </div>
+        <!-- PRODUCT LIST -->
+        <section class="products-section">
+
+            {% if products %}
+
+                {% for product in products %}
+
+                <div class="product-card">
+                    <div class="product-main-info">
+                        <div class="product-img-container">
+                            {% if product.image_file and product.image_file != 'default.jpg' %}
+                                <img src="{{ url_for('static', filename='uploads/' + product.image_file) }}"
+                                     alt="{{ product.title }}" class="product-img">
+                            {% else %}
+                                <div class="product-no-image">📦</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="product-text-details">
+                            <h3>{{ product.title }}</h3>
+                            <p class="product-price">${{ product.price }}</p>
+
+                            {% set stock = product.stock if product.stock else 0 %}
+                            <p class="product-stock">
+                                <span class="stock-badge {% if stock <= 5 %}stock-low{% else %}stock-ok{% endif %}">
+                                    {{ stock }} pcs.
+                                </span>
+                            </p>
+
+                            <p class="product-desc-short">
+                                <small>{{ product.desc[:60] }}{% if product.desc|length > 60 %}...{% endif %}</small>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <a class="edit-link" href="/edit-product/{{ product.id }}">Edit</a>
+                        <form method="POST" action="/delete-product/{{ product.id }}" style="display:inline;">
+                            <button class="delete-btn" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+            <div class="empty-state">
+                <div class="empty-icon">📦</div>
+                <h2>No products yet</h2>
+                <p>Start selling by adding your first product to the marketplace.</p>
+                <a href="/add-product" class="empty-cta">＋ Add your first product</a>
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
 
 </div>
 
