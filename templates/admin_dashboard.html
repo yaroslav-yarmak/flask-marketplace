@@ -3,35 +3,109 @@
 {% block title %}Admin - Statistics{% endblock %}
 
 {% block content %}
-<header class="main-header" style="margin-bottom: 30px;">
-    <h1 style="font-size: 1.8rem; color: #111;">System Overview</h1>
-    <p style="color: #666;">General statistics of your marketplace</p>
-</header>
+<link rel="stylesheet" href="{{ url_for('static', filename='admin_dashboard.css') }}">
 
-<div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
-    <div class="stat-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee;">
-        <h3 style="text-transform: uppercase; font-size: 0.75rem; color: #888; font-weight: 700; margin-bottom: 10px;">Total Products</h3>
-        <p class="stat-number" style="font-size: 2rem; font-weight: 800; color: #111; margin: 0;">{{ stats.total_products }}</p>
-    </div>
+<div class="adm-dashboard">
 
-    <div class="stat-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee;">
-        <h3 style="text-transform: uppercase; font-size: 0.75rem; color: #888; font-weight: 700; margin-bottom: 10px;">Sellers</h3>
-        <p class="stat-number" style="font-size: 2rem; font-weight: 800; color: #111; margin: 0;">{{ stats.total_sellers }}</p>
-    </div>
+    <header class="main-header adm-header">
+        <h1>System Overview</h1>
+        <p class="adm-subtitle">Marketplace administration panel — monitor users, sellers and orders from one place</p>
+    </header>
 
-    <div class="stat-card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee;">
-        <h3 style="text-transform: uppercase; font-size: 0.75rem; color: #888; font-weight: 700; margin-bottom: 10px;">Users</h3>
-        <p class="stat-number" style="font-size: 2rem; font-weight: 800; color: #111; margin: 0;">{{ stats.total_users }}</p>
-    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="adm-flash-container">
+        {% for category, message in messages %}
+          <div class="adm-alert adm-alert-{{ category if category != 'message' else 'success' }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
-    <div class="stat-card highlight" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 2px solid #6366f1;">
-        <h3 style="text-transform: uppercase; font-size: 0.75rem; color: #6366f1; font-weight: 700; margin-bottom: 10px;">Pending Requests</h3>
-        <p class="stat-number" style="font-size: 2rem; font-weight: 800; color: #111; margin: 0;">{{ stats.pending_sellers }}</p>
-    </div>
+    <section class="adm-stats-grid" aria-label="Marketplace statistics">
+        <div class="adm-stat-card">
+            <span class="adm-stat-icon" aria-hidden="true">📦</span>
+            <div class="adm-stat-body">
+                <p class="adm-stat-label">Total Products</p>
+                <p class="adm-stat-value">{{ stats.total_products }}</p>
+            </div>
+        </div>
+
+        <div class="adm-stat-card">
+            <span class="adm-stat-icon" aria-hidden="true">🏪</span>
+            <div class="adm-stat-body">
+                <p class="adm-stat-label">Sellers</p>
+                <p class="adm-stat-value">{{ stats.total_sellers }}</p>
+            </div>
+        </div>
+
+        <div class="adm-stat-card">
+            <span class="adm-stat-icon" aria-hidden="true">👥</span>
+            <div class="adm-stat-body">
+                <p class="adm-stat-label">Users</p>
+                <p class="adm-stat-value">{{ stats.total_users }}</p>
+            </div>
+        </div>
+
+        <div class="adm-stat-card {% if stats.pending_sellers > 0 %}adm-stat-card-accent{% endif %}">
+            <span class="adm-stat-icon" aria-hidden="true">⏳</span>
+            <div class="adm-stat-body">
+                <p class="adm-stat-label">Pending Requests</p>
+                <p class="adm-stat-value">{{ stats.pending_sellers }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="adm-section" aria-label="Administration">
+        <div class="adm-section-head">
+            <h2>Administration</h2>
+            <p>Manage the people and orders behind your marketplace</p>
+        </div>
+
+        <div class="adm-quick-links">
+            <a href="{{ url_for('admin.admin_users') }}" class="adm-link-card">
+                <span class="adm-link-icon" aria-hidden="true">📇</span>
+                <span class="adm-link-title">All Users</span>
+                <span class="adm-link-desc">Review every registered buyer and seller</span>
+            </a>
+            <a href="{{ url_for('admin.admin_requests') }}" class="adm-link-card">
+                <span class="adm-link-icon" aria-hidden="true">👤</span>
+                <span class="adm-link-title">Seller Requests</span>
+                <span class="adm-link-desc">Approve or reject new seller applications</span>
+            </a>
+            <a href="{{ url_for('admin.admin_all_orders') }}" class="adm-link-card">
+                <span class="adm-link-icon" aria-hidden="true">📦</span>
+                <span class="adm-link-title">All Orders</span>
+                <span class="adm-link-desc">Track order activity across the store</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="adm-pending" aria-label="Pending seller requests">
+        {% if stats.pending_sellers > 0 %}
+        <div class="adm-pending-callout">
+            <span class="adm-pending-icon" aria-hidden="true">⏳</span>
+            <div class="adm-pending-body">
+                <p class="adm-pending-title">{{ stats.pending_sellers }} pending seller request{{ '' if stats.pending_sellers == 1 else 's' }}</p>
+                <p class="adm-pending-text">Review and approve new sellers to grow your marketplace.</p>
+            </div>
+            <a href="{{ url_for('admin.admin_requests') }}" class="adm-pending-action">Review Requests</a>
+        </div>
+        {% else %}
+        <div class="adm-pending-empty">
+            <span class="adm-pending-icon" aria-hidden="true">✅</span>
+            <div class="adm-pending-body">
+                <p class="adm-pending-title">No pending seller requests</p>
+                <p class="adm-pending-text">You are all caught up — the seller inbox is clear.</p>
+            </div>
+        </div>
+        {% endif %}
+    </section>
+
+    <section class="adm-welcome">
+        <h2>Welcome, Chief Administrator</h2>
+        <p>Use the sidebar to navigate orders, seller requests and user management. This dashboard reflects live data from your marketplace.</p>
+    </section>
+
 </div>
-
-<section class="admin-welcome" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee;">
-    <h2 style="margin-bottom: 10px;">Welcome, Chief Administrator!</h2>
-    <p style="color: #666; line-height: 1.6;">Here you can manage the security and structure of your marketplace. Use the sidebar to navigate through orders, seller requests, and products.</p>
-</section>
 {% endblock %}
