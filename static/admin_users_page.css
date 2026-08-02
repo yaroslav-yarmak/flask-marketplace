@@ -1,0 +1,336 @@
+/* =========================================================
+   ADMIN ALL USERS — Japanese Marketplace Admin Theme
+   Used ONLY by templates/admin_users.html
+   Loaded after static/admin.css so page-only overrides apply.
+   Sidebar shell overrides deliberately mirror
+   admin_dashboard.css / admin_requests_page.css so this
+   page matches the other redesigned admin pages exactly.
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #070615;
+    min-height: 100vh;
+    color: #f5f0e1;
+}
+
+/* ============ LAYOUT SHELL ============ */
+.admin-container {
+    min-height: 100vh;
+}
+
+/* ============ SIDEBAR (matches Admin Dashboard) ============ */
+.admin-sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: rgba(10, 8, 28, 0.92);
+    border-right: 1px solid rgba(184, 142, 72, 0.22);
+    padding: 26px 18px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar-header {
+    margin-bottom: 8px;
+}
+
+.sidebar-header h2 {
+    color: #d4a84b !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    margin: 0;
+    padding: 0 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.admin-sidebar nav {
+    flex: 1;
+}
+
+.admin-sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.admin-sidebar li {
+    margin: 0;
+}
+
+.admin-sidebar a {
+    color: rgba(230, 215, 184, 0.75);
+    text-decoration: none;
+    display: block;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.admin-sidebar a:hover {
+    color: #f5f0e1;
+    background: rgba(30, 27, 55, 0.6);
+    border-color: transparent;
+}
+
+.admin-sidebar li.active a,
+.admin-sidebar li.active a:hover {
+    background: linear-gradient(135deg, rgba(184, 142, 72, 0.28) 0%, rgba(140, 100, 45, 0.22) 100%);
+    color: #d4a84b;
+    border-left: 3px solid #d4a84b;
+    border-top-color: rgba(184, 142, 72, 0.5);
+    border-right-color: rgba(184, 142, 72, 0.5);
+    border-bottom-color: rgba(184, 142, 72, 0.5);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.3),
+        inset 0 0 12px rgba(184, 142, 72, 0.08);
+}
+
+.admin-sidebar hr {
+    margin: 20px 0 !important;
+    border-top: 1px solid rgba(184, 142, 72, 0.18) !important;
+    opacity: 1 !important;
+}
+
+.admin-sidebar .logout {
+    color: #ff8f8f !important;
+}
+
+.admin-sidebar li.active a.logout,
+.admin-sidebar .logout:hover {
+    color: #ffb3b3 !important;
+    background: rgba(120, 40, 40, 0.25);
+    border: 1px solid rgba(200, 80, 80, 0.35);
+    border-left: 3px solid rgba(200, 80, 80, 0.6);
+}
+
+/* ============ MAIN CONTENT ============ */
+.admin-main {
+    flex: 1;
+    padding: 34px 38px;
+    min-width: 0;
+}
+
+/* --- HEADER --- */
+.main-header.adm-header {
+    margin-bottom: 26px;
+}
+
+.main-header h1 {
+    margin: 0 0 4px 0;
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    color: #f5f0e1;
+}
+
+.adm-subtitle {
+    margin: 0;
+    color: rgba(230, 215, 184, 0.62);
+    font-size: 0.92rem;
+}
+
+/* ============ SUMMARY ============ */
+.adm-users-summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    background: rgba(10, 8, 28, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(184, 142, 72, 0.28);
+    border-radius: 16px;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.35),
+        0 0 28px rgba(184, 142, 72, 0.05);
+    margin-bottom: 26px;
+    max-width: 420px;
+}
+
+.adm-users-summary-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(184, 142, 72, 0.28) 0%, rgba(140, 100, 45, 0.22) 100%);
+    border: 1px solid rgba(184, 142, 72, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.adm-users-summary-body {
+    min-width: 0;
+}
+
+.adm-users-summary-label {
+    margin: 0 0 2px 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(230, 215, 184, 0.6);
+}
+
+.adm-users-summary-value {
+    margin: 0;
+    font-size: 1.85rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #f5f0e1;
+}
+
+/* ============ USERS PANEL ============ */
+.adm-users-panel {
+    background: rgba(10, 8, 28, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(184, 142, 72, 0.22);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+    overflow-x: auto;
+}
+
+/* --- TABLE --- */
+.adm-users-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.adm-users-table th {
+    padding: 12px 16px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(230, 215, 184, 0.6);
+    border-bottom: 1px solid rgba(184, 142, 72, 0.25);
+}
+
+.adm-users-table td {
+    padding: 15px 16px;
+    border-bottom: 1px solid rgba(184, 142, 72, 0.12);
+    color: #f5f0e1;
+    vertical-align: middle;
+}
+
+.adm-users-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.adm-users-table tbody tr:hover {
+    background: rgba(30, 27, 55, 0.35);
+}
+
+.adm-users-id {
+    font-weight: 800;
+    color: #d4a84b;
+    white-space: nowrap;
+}
+
+.adm-users-email {
+    font-weight: 600;
+    color: #f5f0e1;
+}
+
+.adm-users-joined {
+    color: rgba(230, 215, 184, 0.62);
+    font-size: 0.88rem;
+    white-space: nowrap;
+}
+
+/* --- ROLE BADGES (restrained, only existing user.role) --- */
+.adm-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+}
+
+.adm-badge-buyer {
+    background: rgba(120, 125, 140, 0.18);
+    border-color: rgba(150, 155, 170, 0.3);
+    color: #c2c9d6;
+}
+
+.adm-badge-seller {
+    background: rgba(70, 150, 90, 0.2);
+    border-color: rgba(70, 150, 90, 0.4);
+    color: #a9d8b4;
+}
+
+.adm-badge-admin {
+    background: rgba(184, 142, 72, 0.2);
+    border-color: rgba(184, 142, 72, 0.45);
+    color: #e6c78f;
+}
+
+/* --- STATUS BADGE (only existing user.status) --- */
+.adm-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background: rgba(70, 150, 90, 0.18);
+    border: 1px solid rgba(70, 150, 90, 0.35);
+    color: #a9d8b4;
+}
+
+/* ============ EMPTY STATE ============ */
+.adm-users-empty {
+    text-align: center;
+    padding: 50px 30px;
+}
+
+.adm-users-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 14px;
+    opacity: 0.85;
+}
+
+.adm-users-empty-title {
+    margin: 0 0 6px 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #f5f0e1;
+}
+
+.adm-users-empty-text {
+    margin: 0;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(230, 215, 184, 0.62);
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
