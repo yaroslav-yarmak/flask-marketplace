@@ -1,11 +1,126 @@
-<h2>Edit Product</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - Seller Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit_product_page.css') }}">
+</head>
 
-<form method="POST">
+<body>
 
-    <input type="text" name="title" value="{{ product.title }}"><br><br>
+<div class="dashboard-wrap">
 
-    <input type="number" name="price" value="{{ product.price }}"><br><br>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark">M</span>
+            <span class="brand-text">My<span>Market</span></span>
+        </div>
+        <p class="brand-sub">Seller Panel</p>
 
-    <button type="submit">Save</button>
+        <nav class="nav">
+            <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' or request.path.startswith('/edit-product') %}active{% endif %}">
+                <span class="nav-icon">📦</span>
+                <span>My Products</span>
+            </a>
 
-</form>
+            <a href="/add-product" class="nav-link {% if request.path == '/add-product' %}active{% endif %}">
+                <span class="nav-icon">➕</span>
+                <span>Add Product</span>
+            </a>
+
+            <a href="/orders" class="nav-link {% if request.path == '/orders' %}active{% endif %}">
+                <span class="nav-icon">🛒</span>
+                <span>Orders</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/logout" class="nav-link logout-link">Logout</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="top-bar">
+            <div class="title-block">
+                <h1>Edit Product</h1>
+                <p class="subtitle">Update the information for your product listing</p>
+            </div>
+        </header>
+
+        <nav class="breadcrumb">
+            <a href="/dashboard">My Products</a>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-current">Edit Product</span>
+        </nav>
+
+        <div class="edit-layout">
+
+            <!-- LEFT: PREVIEW & READ-ONLY DETAILS -->
+            <section class="preview-panel">
+                <h2>Product Preview</h2>
+
+                <div class="preview-image">
+                    {% if product.image_file and product.image_file != 'default.jpg' %}
+                        <img src="{{ url_for('static', filename='uploads/' + product.image_file) }}"
+                             alt="{{ product.title }}">
+                    {% else %}
+                        <div class="preview-no-image">📦</div>
+                    {% endif %}
+                </div>
+
+                <div class="readonly-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Category</span>
+                        <span class="detail-value category-value">{{ product.category if product.category else 'General' }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Stock</span>
+                        <span class="detail-value">{{ product.stock if product.stock else 0 }} pcs.</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Description</span>
+                        <span class="detail-value">{{ product.desc if product.desc else '—' }}</span>
+                    </div>
+                </div>
+
+                <p class="readonly-note">
+                    Currently, only the product title and price can be edited.
+                </p>
+            </section>
+
+            <!-- RIGHT: EDIT FORM -->
+            <section class="edit-panel">
+                <h2>Edit Details</h2>
+
+                <form method="POST">
+
+                    <div class="input-group">
+                        <label class="field-label" for="title">Title</label>
+                        <input type="text" id="title" name="title" value="{{ product.title }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="field-label" for="price">Price</label>
+                        <input type="number" id="price" name="price" value="{{ product.price }}" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="/dashboard" class="btn-cancel">Cancel</a>
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </div>
+
+                </form>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
